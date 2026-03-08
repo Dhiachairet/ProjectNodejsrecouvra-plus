@@ -1,0 +1,1013 @@
+openapi: 3.0.0
+info:
+  title: Recouvra+ API
+  description: API de gestion du recouvrement de factures
+  version: 1.0.0
+  contact:
+    name: Support
+    email: support@recouvraplus.com
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+  - url: https://api.recouvraplus.com/v1
+    description: Production server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Enter your JWT token in the format **Bearer &lt;token&gt;**
+  
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Error message"
+    
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "60d21b4667d0d8992e610c85"
+        email:
+          type: string
+          format: email
+          example: "user@example.com"
+        firstName:
+          type: string
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+        role:
+          type: string
+          enum: [agent, manager, admin]
+          example: "agent"
+        active:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    
+    Client:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          example: "Entreprise Dupont"
+        email:
+          type: string
+          format: email
+          example: "contact@dupont.fr"
+        phone:
+          type: string
+          example: "01 23 45 67 89"
+        address:
+          type: object
+          properties:
+            street:
+              type: string
+              example: "123 Rue de Paris"
+            city:
+              type: string
+              example: "Paris"
+            postalCode:
+              type: string
+              example: "75001"
+            country:
+              type: string
+              example: "France"
+        company:
+          type: string
+          example: "Dupont SARL"
+        taxId:
+          type: string
+          example: "FR123456789"
+        totalInvoices:
+          type: number
+          example: 5
+        totalUnpaid:
+          type: number
+          example: 2500
+        createdBy:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    
+    Invoice:
+      type: object
+      properties:
+        _id:
+          type: string
+        invoiceNumber:
+          type: string
+          example: "FACT-2024-001"
+        client:
+          type: string
+        amount:
+          type: number
+          example: 1500.50
+        paidAmount:
+          type: number
+          example: 500
+        issueDate:
+          type: string
+          format: date-time
+        dueDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [unpaid, partially_paid, paid, overdue, cancelled]
+        description:
+          type: string
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+              quantity:
+                type: number
+              unitPrice:
+                type: number
+              amount:
+                type: number
+        payments:
+          type: array
+          items:
+            type: object
+            properties:
+              amount:
+                type: number
+              paymentDate:
+                type: string
+                format: date-time
+              paymentMethod:
+                type: string
+                enum: [cash, bank_transfer, check, credit_card, other]
+              reference:
+                type: string
+              receivedBy:
+                type: string
+    
+    CollectionAction:
+      type: object
+      properties:
+        _id:
+          type: string
+        invoice:
+          type: string
+        client:
+          type: string
+        actionType:
+          type: string
+          enum: [phone_call, email, meeting, reminder_letter, legal_notice, visit]
+        actionDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [planned, completed, cancelled, failed]
+        notes:
+          type: string
+        result:
+          type: string
+        nextActionDate:
+          type: string
+          format: date-time
+        performedBy:
+          type: string
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Not authorized, no token
+    
+    ForbiddenError:
+      description: User doesn't have required role
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Role agent is not authorized to access this resource
+    
+    NotFoundError:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: Resource not found
+
+security:
+  - bearerAuth: []
+
+paths:
+  # Auth endpoints (from Part A)
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - firstName
+                - lastName
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 6
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                role:
+                  type: string
+                  enum: [agent, manager, admin]
+                  default: agent
+            examples:
+              agent:
+                summary: Register as agent
+                value:
+                  email: agent@example.com
+                  password: password123
+                  firstName: Jean
+                  lastName: Dupont
+              admin:
+                summary: Register as admin
+                value:
+                  email: admin@example.com
+                  password: admin123
+                  firstName: Admin
+                  lastName: User
+                  role: admin
+      responses:
+        201:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        400:
+          description: Validation error or user already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      summary: Login user
+      tags: [Authentication]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+            examples:
+              valid:
+                value:
+                  email: user@example.com
+                  password: password123
+      responses:
+        200:
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        401:
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/me:
+    get:
+      summary: Get current user profile
+      tags: [Authentication]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: User profile retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    $ref: '#/components/schemas/User'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+  # Client endpoints (Part B)
+  /clients:
+    get:
+      summary: Get all clients
+      tags: [Clients]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 10
+          description: Number of items per page
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: Search in name, company, email
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+            enum: [name, createdAt, company]
+            default: name
+          description: Field to sort by
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: asc
+          description: Sort order
+      responses:
+        200:
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pages:
+                    type: integer
+                  clients:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Client'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    
+    post:
+      summary: Create a new client
+      tags: [Clients]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - phone
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                address:
+                  type: object
+                  properties:
+                    street:
+                      type: string
+                    city:
+                      type: string
+                    postalCode:
+                      type: string
+                    country:
+                      type: string
+                company:
+                  type: string
+                taxId:
+                  type: string
+                notes:
+                  type: string
+            examples:
+              basic:
+                summary: Basic client
+                value:
+                  name: "SARL Martin"
+                  email: "contact@martin.fr"
+                  phone: "01 23 45 67 89"
+              full:
+                summary: Full client with address
+                value:
+                  name: "Dupont SA"
+                  email: "compta@dupont.fr"
+                  phone: "01 98 76 54 32"
+                  address:
+                    street: "45 Avenue des Champs-Élysées"
+                    city: "Paris"
+                    postalCode: "75008"
+                    country: "France"
+                  company: "Dupont SA"
+                  taxId: "FR987654321"
+      responses:
+        201:
+          description: Client created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  client:
+                    $ref: '#/components/schemas/Client'
+        400:
+          description: Validation error
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /clients/{id}:
+    get:
+      summary: Get a single client by ID
+      tags: [Clients]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Client ID
+      responses:
+        200:
+          description: Client details with invoices and recent actions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  client:
+                    $ref: '#/components/schemas/Client'
+                  stats:
+                    type: object
+                    properties:
+                      totalInvoices:
+                        type: number
+                      totalPaid:
+                        type: number
+                      totalUnpaid:
+                        type: number
+                  recentInvoices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+                  recentActions:
+                    type: array
+        404:
+          $ref: '#/components/responses/NotFoundError'
+    
+    put:
+      summary: Update a client
+      tags: [Clients]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                phone:
+                  type: string
+                address:
+                  type: object
+                company:
+                  type: string
+                notes:
+                  type: string
+      responses:
+        200:
+          description: Client updated
+        404:
+          $ref: '#/components/responses/NotFoundError'
+    
+    delete:
+      summary: Delete a client (Admin/Manager only)
+      tags: [Clients]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Client deleted
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+
+  /clients/{id}/invoices:
+    get:
+      summary: Get all invoices for a specific client
+      tags: [Clients]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of client invoices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  invoices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+
+  # Invoice endpoints (Part B)
+  /invoices:
+    get:
+      summary: Get all invoices with filters
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [unpaid, partially_paid, paid, overdue, cancelled]
+          description: Filter by status
+        - in: query
+          name: client
+          schema:
+            type: string
+          description: Filter by client ID
+        - in: query
+          name: fromDate
+          schema:
+            type: string
+            format: date
+          description: Filter from date
+        - in: query
+          name: toDate
+          schema:
+            type: string
+            format: date
+          description: Filter to date
+      responses:
+        200:
+          description: List of invoices with summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  total:
+                    type: integer
+                  page:
+                    type: integer
+                  pages:
+                    type: integer
+                  summary:
+                    type: object
+                    properties:
+                      totalAmount:
+                        type: number
+                      totalPaid:
+                        type: number
+                      totalUnpaid:
+                        type: number
+                  invoices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+    
+    post:
+      summary: Create a new invoice
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invoiceNumber
+                - client
+                - amount
+                - dueDate
+              properties:
+                invoiceNumber:
+                  type: string
+                client:
+                  type: string
+                amount:
+                  type: number
+                dueDate:
+                  type: string
+                  format: date
+                description:
+                  type: string
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                      quantity:
+                        type: number
+                      unitPrice:
+                        type: number
+                      amount:
+                        type: number
+            examples:
+              simple:
+                summary: Simple invoice
+                value:
+                  invoiceNumber: "FACT-2024-001"
+                  client: "60d21b4667d0d8992e610c85"
+                  amount: 1500
+                  dueDate: "2024-04-30"
+              withItems:
+                summary: Invoice with items
+                value:
+                  invoiceNumber: "FACT-2024-002"
+                  client: "60d21b4667d0d8992e610c85"
+                  amount: 2350.50
+                  dueDate: "2024-04-30"
+                  items: [
+                    {
+                      description: "Prestation de conseil",
+                      quantity: 10,
+                      unitPrice: 150,
+                      amount: 1500
+                    },
+                    {
+                      description: "Formation",
+                      quantity: 2,
+                      unitPrice: 425.25,
+                      amount: 850.50
+                    }
+                  ]
+      responses:
+        201:
+          description: Invoice created
+        400:
+          description: Validation error
+
+  /invoices/{id}/payments:
+    post:
+      summary: Add a payment to an invoice
+      tags: [Invoices]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - paymentMethod
+              properties:
+                amount:
+                  type: number
+                paymentMethod:
+                  type: string
+                  enum: [cash, bank_transfer, check, credit_card, other]
+                paymentDate:
+                  type: string
+                  format: date-time
+                reference:
+                  type: string
+                notes:
+                  type: string
+            examples:
+              cash:
+                value:
+                  amount: 500
+                  paymentMethod: "cash"
+              bank:
+                value:
+                  amount: 1000
+                  paymentMethod: "bank_transfer"
+                  reference: "VIR-2024-123"
+      responses:
+        201:
+          description: Payment added
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  invoice:
+                    $ref: '#/components/schemas/Invoice'
+                  payment:
+                    type: object
+        400:
+          description: Payment exceeds remaining amount
+
+  # Collection endpoints (Part B)
+  /collections:
+    get:
+      summary: Get all collection actions
+      tags: [Collections]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [planned, completed, cancelled, failed]
+        - in: query
+          name: actionType
+          schema:
+            type: string
+            enum: [phone_call, email, meeting, reminder_letter, legal_notice, visit]
+        - in: query
+          name: client
+          schema:
+            type: string
+      responses:
+        200:
+          description: List of collection actions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  count:
+                    type: integer
+                  total:
+                    type: integer
+                  actions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CollectionAction'
+    
+    post:
+      summary: Create a new collection action
+      tags: [Collections]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invoice
+                - actionType
+              properties:
+                invoice:
+                  type: string
+                actionType:
+                  type: string
+                  enum: [phone_call, email, meeting, reminder_letter, legal_notice, visit]
+                actionDate:
+                  type: string
+                  format: date-time
+                notes:
+                  type: string
+                nextActionDate:
+                  type: string
+                  format: date-time
+            examples:
+              phone:
+                value:
+                  invoice: "60d21b4667d0d8992e610c85"
+                  actionType: "phone_call"
+                  notes: "Appel pour relance"
+              email:
+                value:
+                  invoice: "60d21b4667d0d8992e610c85"
+                  actionType: "email"
+                  notes: "Envoi email de relance"
+                  nextActionDate: "2024-04-15T10:00:00Z"
+      responses:
+        201:
+          description: Collection action created
+
+  # Stats endpoints (Part B)
+  /stats:
+    get:
+      summary: Get complete dashboard statistics
+      tags: [Statistics]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Dashboard statistics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  stats:
+                    type: object
+                    properties:
+                      overview:
+                        type: object
+                        properties:
+                          totalClients:
+                            type: integer
+                          totalInvoices:
+                            type: integer
+                          overdueCount:
+                            type: integer
+                          dueThisWeek:
+                            type: integer
+                          unpaidAmount:
+                            type: number
+                          unpaidCount:
+                            type: integer
+                      invoicesByStatus:
+                        type: object
+                      monthlyStats:
+                        type: array
+                      topClients:
+                        type: array
+                      collectionStats:
+                        type: object
+                      recentActivities:
+                        type: array
+
+  /stats/summary:
+    get:
+      summary: Get quick summary statistics for dashboard widgets
+      tags: [Statistics]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Quick summary
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  summary:
+                    type: object
+                    properties:
+                      totalUnpaid:
+                        type: number
+                      todayPayments:
+                        type: number
+                      pendingActions:
+                        type: integer
+                      activeAgents:
+                        type: integer
