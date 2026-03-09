@@ -5,8 +5,8 @@ import {
   updateUser, 
   deleteUser 
 } from '../controllers/user.controller.js';
-import { protect, authorize } from '../middleware/auth.js';
-
+import { protect } from '../middleware/auth.js';
+import { authorize } from '../middleware/roles.js';
 const router = express.Router();
 
 // All user routes are protected
