@@ -1,6 +1,6 @@
 import { sendError } from '../utils/send.js';
 
-// Generic authorize function
+
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -15,7 +15,7 @@ export const authorize = (...roles) => {
   };
 };
 
-// Specific role checks
+
 export const isAdmin = authorize('admin');
 export const isManagerOrAdmin = authorize('manager', 'admin');
 export const isAgentOrAbove = authorize('agent', 'manager', 'admin');

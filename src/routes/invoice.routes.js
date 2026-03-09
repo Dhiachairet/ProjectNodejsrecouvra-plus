@@ -12,10 +12,10 @@ import { protect } from '../middleware/auth.js';
 import { authorize } from '../middleware/roles.js';
 const router = express.Router();
 
-// All routes are protected
+
 router.use(protect);
 
-// Invoice routes
+
 router.route('/')
   .get(getInvoices)
   .post(createInvoice);
@@ -25,7 +25,7 @@ router.route('/:id')
   .put(updateInvoice)
   .delete(authorize('admin'), deleteInvoice);
 
-// Payment routes
+
 router.post('/:id/payments', addPayment);
 router.get('/:id/payments', getInvoicePayments);
 

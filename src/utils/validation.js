@@ -1,6 +1,5 @@
 import Joi from 'joi';
 
-// User registration validation
 export const validateRegister = Joi.object({
   email: Joi.string().email().required().messages({
     'string.email': 'Please provide a valid email',
@@ -19,7 +18,7 @@ export const validateRegister = Joi.object({
   role: Joi.string().valid('agent', 'manager', 'admin').default('agent')
 });
 
-// User login validation
+
 export const validateLogin = Joi.object({
   email: Joi.string().email().required().messages({
     'string.email': 'Please provide a valid email',
@@ -30,7 +29,7 @@ export const validateLogin = Joi.object({
   })
 });
 
-// User update validation
+
 export const validateUserUpdate = Joi.object({
   firstName: Joi.string(),
   lastName: Joi.string(),
@@ -41,7 +40,7 @@ export const validateUserUpdate = Joi.object({
   'object.min': 'At least one field must be provided for update'
 });
 
-// Client validation
+
 export const validateClient = Joi.object({
   name: Joi.string().required().min(2).max(100).messages({
     'string.min': 'Client name must be at least 2 characters',
@@ -65,7 +64,7 @@ export const validateClient = Joi.object({
   notes: Joi.string().allow('')
 });
 
-// Invoice validation
+
 export const validateInvoice = Joi.object({
   invoiceNumber: Joi.string().required().uppercase().messages({
     'any.required': 'Invoice number is required'
@@ -91,7 +90,7 @@ export const validateInvoice = Joi.object({
   }))
 });
 
-// Payment validation
+
 export const validatePayment = Joi.object({
   amount: Joi.number().positive().required().messages({
     'number.positive': 'Payment amount must be positive',
@@ -106,7 +105,7 @@ export const validatePayment = Joi.object({
   notes: Joi.string().allow('')
 });
 
-// Collection action validation
+
 export const validateCollectionAction = Joi.object({
   invoice: Joi.string().required().messages({
     'any.required': 'Invoice ID is required'
@@ -127,7 +126,7 @@ export const validateCollectionAction = Joi.object({
   legalDocument: Joi.string().allow('')
 });
 
-// FIXED: Invoice update validation (partial updates)
+
 export const validateInvoiceUpdate = Joi.object({
   description: Joi.string(),
   dueDate: Joi.date().greater('now'),
@@ -137,17 +136,17 @@ export const validateInvoiceUpdate = Joi.object({
     unitPrice: Joi.number().positive().required(),
     amount: Joi.number().positive().required()
   })),
-  status: Joi.string().valid('cancelled'), // Simplified - just allow 'cancelled' status
+  status: Joi.string().valid('cancelled'),
   cancelledReason: Joi.string().when('status', {
     is: 'cancelled',
     then: Joi.required(),
-    otherwise: Joi.forbidden() // Don't allow cancelledReason if status is not cancelled
+    otherwise: Joi.forbidden() 
   })
 }).min(1).messages({
   'object.min': 'At least one field must be provided for update'
 });
 
-// Fixed: Collection action update validation
+
 export const validateCollectionActionUpdate = Joi.object({
   status: Joi.string().valid('planned', 'completed', 'cancelled', 'failed'),
   notes: Joi.string(),

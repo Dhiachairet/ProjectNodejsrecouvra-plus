@@ -4,16 +4,14 @@ import { User } from '../models/User.js';
 import { CollectionAction } from '../models/CollectionAction.js';
 import { sendJson } from '../utils/send.js';
 
-// @desc    Get dashboard statistics
-// @route   GET /api/stats
-// @access  Private
+
 export async function getStats(req, res, next) {
   try {
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     
-    // Run all aggregations in parallel
+    
     const [
       totalClients,
       totalInvoices,
@@ -25,13 +23,13 @@ export async function getStats(req, res, next) {
       recentActivities,
       userStats
     ] = await Promise.all([
-      // Total clients
+     
       Client.countDocuments(),
       
-      // Total invoices
+      
       Invoice.countDocuments(),
       
-      // Invoices by status
+      
       Invoice.aggregate([
         { $group: {
           _id: '$status',
@@ -42,7 +40,7 @@ export async function getStats(req, res, next) {
         { $sort: { _id: 1 } }
       ]),
       
-      // Unpaid summary
+      
       Invoice.aggregate([
         { $match: { status: { $in: ['unpaid', 'partially_paid', 'overdue'] } } },
         { $group: {
@@ -54,7 +52,7 @@ export async function getStats(req, res, next) {
         }}
       ]),
       
-      // Monthly statistics (current year)
+      
       Invoice.aggregate([
         { $match: { createdAt: { $gte: startOfYear } } },
         { $group: {
@@ -66,7 +64,7 @@ export async function getStats(req, res, next) {
         { $sort: { '_id': 1 } }
       ]),
       
-      // Top clients by unpaid amount
+      
       Invoice.aggregate([
         { $match: { status: { $in: ['unpaid', 'partially_paid', 'overdue'] } } },
         { $group: {
@@ -92,7 +90,7 @@ export async function getStats(req, res, next) {
         }}
       ]),
       
-      // Collection actions statistics
+     
       CollectionAction.aggregate([
         { $match: { createdAt: { $gte: startOfMonth } } },
         { $group: {
@@ -101,9 +99,9 @@ export async function getStats(req, res, next) {
         }}
       ]),
       
-      // Recent activities
+      
       Promise.all([
-        // Recent payments
+        
         Invoice.aggregate([
           { $unwind: '$payments' },
           { $match: { 'payments.paymentDate': { $gte: startOfMonth } } },
@@ -126,7 +124,7 @@ export async function getStats(req, res, next) {
           }}
         ]),
         
-        // Recent collection actions
+        
         CollectionAction.find({ createdAt: { $gte: startOfMonth } })
           .populate('client', 'name')
           .populate('invoice', 'invoiceNumber')
@@ -147,7 +145,7 @@ export async function getStats(req, res, next) {
           .slice(0, 10)
       ),
       
-      // User statistics
+    
       User.aggregate([
         { $group: {
           _id: '$role',
@@ -157,12 +155,12 @@ export async function getStats(req, res, next) {
       ])
     ]);
     
-    // Overdue invoices count
+    
     const overdueCount = await Invoice.countDocuments({
       status: 'overdue'
     });
     
-    // Invoices due this week
+    
     const endOfWeek = new Date(now);
     endOfWeek.setDate(now.getDate() + 7);
     
@@ -216,9 +214,7 @@ export async function getStats(req, res, next) {
   }
 }
 
-// @desc    Get simplified stats for dashboard widgets
-// @route   GET /api/stats/summary
-// @access  Private
+
 export async function getSummaryStats(req, res, next) {
   try {
     const now = new Date();
@@ -230,23 +226,22 @@ export async function getSummaryStats(req, res, next) {
       pendingActions,
       activeAgents
     ] = await Promise.all([
-      // Total unpaid amount
+     
       Invoice.aggregate([
         { $match: { status: { $in: ['unpaid', 'partially_paid', 'overdue'] } } },
         { $group: { _id: null, total: { $sum: { $subtract: ['$amount', '$paidAmount'] } } } }
       ]).then(r => r[0]?.total || 0),
       
-      // Today's payments
       Invoice.aggregate([
         { $unwind: '$payments' },
         { $match: { 'payments.paymentDate': { $gte: startOfDay } } },
         { $group: { _id: null, total: { $sum: '$payments.amount' } } }
       ]).then(r => r[0]?.total || 0),
       
-      // Pending collection actions
+      
       CollectionAction.countDocuments({ status: 'planned' }),
       
-      // Active agents
+      
       User.countDocuments({ role: 'agent', active: true })
     ]);
     

@@ -10,7 +10,6 @@ export async function connectDB() {
   }
 }
 
-// Handle connection events
 mongoose.connection.on('disconnected', () => {
   console.log('MongoDB disconnected');
 });
@@ -19,7 +18,6 @@ mongoose.connection.on('error', (err) => {
   console.log('MongoDB connection error:', err);
 });
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
   await mongoose.connection.close();
   process.exit(0);

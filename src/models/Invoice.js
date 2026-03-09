@@ -120,25 +120,25 @@ const invoiceSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtual for remaining amount
+
 invoiceSchema.virtual('remainingAmount').get(function() {
   return this.amount - this.paidAmount;
 });
 
-// Virtual for payment status percentage
+
 invoiceSchema.virtual('paymentPercentage').get(function() {
   if (this.amount === 0) return 100;
   return (this.paidAmount / this.amount) * 100;
 });
 
-// Virtual for isOverdue
+
 invoiceSchema.virtual('isOverdue').get(function() {
   return this.dueDate < new Date() && this.status !== 'paid' && this.status !== 'cancelled';
 });
 
-// Pre-save middleware to auto-calculate status
+
 invoiceSchema.pre('save', function(next) {
-  // Don't recalculate if cancelled
+  
   if (this.status === 'cancelled') {
     return next();
   }
@@ -155,7 +155,7 @@ invoiceSchema.pre('save', function(next) {
   next();
 });
 
-// Post-save middleware to update client statistics
+
 invoiceSchema.post('save', async function(doc) {
   try {
     const Client = mongoose.model('Client');
@@ -181,7 +181,7 @@ invoiceSchema.post('save', async function(doc) {
   }
 });
 
-// Index for efficient queries
+
 invoiceSchema.index({ client: 1, status: 1 });
 invoiceSchema.index({ dueDate: 1, status: 1 });
 

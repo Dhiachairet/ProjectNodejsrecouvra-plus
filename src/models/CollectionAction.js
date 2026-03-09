@@ -47,7 +47,7 @@ const collectionActionSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  // Contact information at time of action
+
   contactPerson: {
     type: String,
     trim: true
@@ -76,7 +76,6 @@ collectionActionSchema.virtual('isNextActionOverdue').get(function() {
   return this.nextActionDate && this.nextActionDate < new Date() && this.status !== 'completed';
 });
 
-// Virtual for action type label
 collectionActionSchema.virtual('actionTypeLabel').get(function() {
   const labels = {
     phone_call: 'Appel téléphonique',

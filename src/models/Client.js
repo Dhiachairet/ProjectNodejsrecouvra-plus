@@ -44,7 +44,7 @@ const clientSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  // Statistics fields (updated via hooks/aggregation)
+ 
   totalInvoices: {
     type: Number,
     default: 0
@@ -63,7 +63,6 @@ const clientSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtual for full address
 clientSchema.virtual('fullAddress').get(function() {
   const parts = [];
   if (this.address.street) parts.push(this.address.street);
@@ -73,12 +72,12 @@ clientSchema.virtual('fullAddress').get(function() {
   return parts.join(', ');
 });
 
-// Virtual for outstanding balance
+
 clientSchema.virtual('outstandingBalance').get(function() {
   return this.totalUnpaid;
 });
 
-// Index for search
+
 clientSchema.index({ name: 'text', company: 'text', email: 'text' });
 
 export const Client = mongoose.model('Client', clientSchema);
