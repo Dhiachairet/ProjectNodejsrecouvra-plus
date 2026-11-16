@@ -6,6 +6,7 @@ Project for the Software Quality and Test Automation module (ISO/IEC 25010).
 - **Backend**: Node.js, Express, MongoDB (Mongoose), JWT, Joi validation, Swagger docs
 - **Frontend**: React + Vite (`frontend/`)
 - **Functional scope and business rules**: [docs/BUSINESS_RULES.md](docs/BUSINESS_RULES.md)
+- **Team plan** (who tests what): [docs/TEAM_PLAN.md](docs/TEAM_PLAN.md)
 
 ## Prerequisites
 
