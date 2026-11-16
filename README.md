@@ -40,6 +40,38 @@ npm run frontend:build   # builds frontend/dist
 npm start                # API + UI on http://localhost:3000
 ```
 
+## Tests
+
+```bash
+npm test                                      # all tests
+npm run test:coverage                         # same, plus a report in coverage/ (open coverage/index.html)
+npm test -- tests/integration/setup.test.js   # one file
+npm test -- -t "transactions"                 # only tests whose name matches
+```
+
+Tests run against an in-memory MongoDB, so they need no `.env` and never touch your real database. The first run downloads a MongoDB binary (about 100 MB, once). The `ExperimentalWarning: VM Modules` line is expected: Jest needs that Node flag for ES modules.
+
+### Writing a test
+
+- Put the file in the folder of its layer (`tests/unit/`, `tests/integration/`, `tests/reliability/`, `tests/security/`) with a name ending in `.test.js`. Start by copying `tests/integration/setup.test.js`.
+- Import the app from `src/app.js`, never from `src/server.js`, which connects to the real database and opens a port.
+- Call `useTestDB()` once at the top of any file that needs the database. The file gets its own empty database, cleared after every test, so test files can run in parallel. Unit tests of pure functions (for example `src/workflows/`) don't need it.
+- Import `describe`, `it`, `expect` and the hooks from `@jest/globals`.
+- To mock a module, use `jest.unstable_mockModule` followed by `await import(...)`. `jest.mock` does not work with ES modules.
+
+| Helper | File | Returns |
+|---|---|---|
+| `createUserWithToken(role, overrides)` | `tests/helpers/auth.js` | `{ user, token }`, logged in through the real login endpoint |
+| `createUsersForAllRoles()` | `tests/helpers/auth.js` | `{ admin, manager, agent }`, each `{ user, token }` |
+| `createUser(role, overrides)` / `loginAs(user)` | `tests/helpers/auth.js` | the user only / a token only |
+| `authHeader(token)` | `tests/helpers/auth.js` | the header for `request(app).get(url).set(authHeader(token))` |
+| `createClient(owner, overrides)` | `tests/helpers/factories.js` | a saved client (pass `assignedAgents` for the N-N relation) |
+| `createInvoice(client, creator, overrides)` | `tests/helpers/factories.js` | a saved unpaid invoice of 1000, due in 30 days |
+| `createCollectionAction(invoice, performer, overrides)` | `tests/helpers/factories.js` | a saved planned action |
+| `useTestDB()` | `tests/helpers/db.js` | registers the connect / clear / disconnect hooks |
+
+The test environment variables (JWT secret, fast password hashing) are set in `tests/helpers/env.js`.
+
 ## Demo accounts
 
 Password for all accounts: `Password123!`
