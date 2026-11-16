@@ -1,8 +1,17 @@
 import { CollectionAction } from '../models/CollectionAction.js';
 import { Invoice } from '../models/Invoice.js';
 import { Client } from '../models/Client.js';
-import { validateCollectionAction, validateCollectionActionUpdate } from '../utils/validation.js';
+import { validateCollectionAction, validateCollectionActionUpdate, validateStatusTransition } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { canAccessClient, clientFilterFor } from '../utils/access.js';
+import { audit } from '../utils/audit.js';
+import { checkTransition } from '../workflows/collectionAction.workflow.js';
+
+const ACTION_POPULATE = [
+  { path: 'invoice', select: 'invoiceNumber amount' },
+  { path: 'client', select: 'name' },
+  { path: 'performedBy', select: 'firstName lastName' }
+];
 
 
 export async function getCollectionActions(req, res, next) {
@@ -24,7 +33,9 @@ export async function getCollectionActions(req, res, next) {
     
     if (status) filter.status = status;
     if (actionType) filter.actionType = actionType;
-    if (client) filter.client = client;
+
+    const clientFilter = await clientFilterFor(req.user, client);
+    if (clientFilter) filter.client = clientFilter;
     
     
     if (fromDate || toDate) {
@@ -33,12 +44,7 @@ export async function getCollectionActions(req, res, next) {
       if (toDate) filter.actionDate.$lte = new Date(toDate);
     }
     
-  
-    if (req.user.role === 'agent') {
-      const clients = await Client.find({ createdBy: req.user.id }).select('_id');
-      filter.client = { $in: clients.map(c => c._id) };
-    }
-    
+
     
     const skip = (parseInt(page) - 1) * parseInt(limit);
     
@@ -125,15 +131,10 @@ export async function createCollectionAction(req, res, next) {
     }
     
     
-    if (req.user.role === 'agent') {
-      const client = await Client.findById(invoice.client);
-      if (client.createdBy.toString() !== req.user.id) {
-        return sendError(res, 403, 'You can only create actions for your own clients');
-      }
-    }
-    
-   
     const client = await Client.findById(invoice.client);
+    if (!canAccessClient(req.user, client)) {
+      return sendError(res, 403, 'You can only create actions for your own clients');
+    }
     
     
     const action = await CollectionAction.create({
@@ -142,7 +143,14 @@ export async function createCollectionAction(req, res, next) {
       performedBy: req.user.id,
       contactPerson: client.name,
       contactEmail: client.email,
-      contactPhone: client.phone
+      contactPhone: client.phone,
+      statusHistory: [{ to: 'planned', changedBy: req.user._id, note: 'Action created' }]
+    });
+
+    await audit(req, 'action.create', {
+      entity: 'CollectionAction',
+      entityId: action._id,
+      details: { actionType: action.actionType, invoice: invoice.invoiceNumber }
     });
     
     
@@ -185,15 +193,80 @@ export async function updateCollectionAction(req, res, next) {
       req.params.id,
       req.body,
       { new: true, runValidators: true }
-    ).populate([
-      { path: 'invoice', select: 'invoiceNumber amount' },
-      { path: 'client', select: 'name' },
-      { path: 'performedBy', select: 'firstName lastName' }
-    ]);
+    ).populate(ACTION_POPULATE);
+
+    await audit(req, 'action.update', {
+      entity: 'CollectionAction',
+      entityId: action._id,
+      details: { fields: Object.keys(req.body) }
+    });
     
     sendJson(res, 200, {
       success: true,
       action
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+export async function changeActionStatus(req, res, next) {
+  try {
+    const { error, value } = validateStatusTransition.validate(req.body);
+    if (error) {
+      return sendError(res, 400, error.details[0].message);
+    }
+
+    const action = await CollectionAction.findById(req.params.id);
+
+    if (!action) {
+      return sendError(res, 404, 'Collection action not found');
+    }
+
+    if (req.user.role === 'agent' && action.performedBy.toString() !== req.user.id) {
+      return sendError(res, 403, 'You can only change the status of actions you created');
+    }
+
+    const from = action.status;
+    const refusal = checkTransition({
+      from,
+      to: value.status,
+      role: req.user.role,
+      result: value.result,
+      actionDate: value.actionDate
+    });
+    if (refusal) {
+      return sendError(res, refusal.status, refusal.message);
+    }
+
+    const changes = { status: value.status };
+    if (value.result) changes.result = value.result;
+    if (value.status === 'planned') changes.actionDate = value.actionDate;
+
+    // Conditional on the current status so two concurrent transitions cannot both succeed.
+    const updated = await CollectionAction.findOneAndUpdate(
+      { _id: action._id, status: from },
+      {
+        $set: changes,
+        $push: { statusHistory: { from, to: value.status, changedBy: req.user._id, note: value.result } }
+      },
+      { new: true, runValidators: true }
+    ).populate(ACTION_POPULATE);
+
+    if (!updated) {
+      return sendError(res, 409, 'The action status was changed by someone else, reload and try again');
+    }
+
+    await audit(req, 'action.status_change', {
+      entity: 'CollectionAction',
+      entityId: action._id,
+      details: { from, to: value.status }
+    });
+
+    sendJson(res, 200, {
+      success: true,
+      action: updated
     });
   } catch (error) {
     next(error);
@@ -210,6 +283,12 @@ export async function deleteCollectionAction(req, res, next) {
     }
     
     await action.deleteOne();
+
+    await audit(req, 'action.delete', {
+      entity: 'CollectionAction',
+      entityId: action._id,
+      details: { actionType: action.actionType, status: action.status }
+    });
     
     sendJson(res, 200, {
       success: true,

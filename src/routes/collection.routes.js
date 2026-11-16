@@ -4,6 +4,7 @@ import {
   getCollectionAction, 
   createCollectionAction, 
   updateCollectionAction, 
+  changeActionStatus,
   deleteCollectionAction,
   getInvoiceActions,
   getClientActions
@@ -25,6 +26,8 @@ router.route('/:id')
   .put(updateCollectionAction)
   .delete(authorize('admin'), deleteCollectionAction);
 
+
+router.patch('/:id/status', changeActionStatus);
 
 router.get('/invoice/:invoiceId', getInvoiceActions);
 router.get('/client/:clientId', getClientActions);

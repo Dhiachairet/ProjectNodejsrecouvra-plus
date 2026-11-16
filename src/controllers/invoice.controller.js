@@ -3,6 +3,10 @@ import { Client } from '../models/Client.js';
 import { CollectionAction } from '../models/CollectionAction.js';
 import { validateInvoice, validatePayment, validateInvoiceUpdate } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { canAccessClient, clientFilterFor } from '../utils/access.js';
+import { audit } from '../utils/audit.js';
+
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 
 export async function getInvoices(req, res, next) {
@@ -12,6 +16,7 @@ export async function getInvoices(req, res, next) {
       limit = 10, 
       status, 
       client, 
+      search,
       fromDate, 
       toDate,
       sortBy = 'createdAt',
@@ -22,7 +27,13 @@ export async function getInvoices(req, res, next) {
     let filter = {};
     
     if (status) filter.status = status;
-    if (client) filter.client = client;
+
+    const clientFilter = await clientFilterFor(req.user, client);
+    if (clientFilter) filter.client = clientFilter;
+
+    if (search) {
+      filter.invoiceNumber = { $regex: `^${escapeRegex(String(search).toUpperCase())}` };
+    }
     
   
     if (fromDate || toDate) {
@@ -31,12 +42,7 @@ export async function getInvoices(req, res, next) {
       if (toDate) filter.createdAt.$lte = new Date(toDate);
     }
     
-  
-    if (req.user.role === 'agent') {
-      const clients = await Client.find({ createdBy: req.user.id }).select('_id');
-      filter.client = { $in: clients.map(c => c._id) };
-    }
-    
+
    
     const skip = (parseInt(page) - 1) * parseInt(limit);
     
@@ -97,7 +103,7 @@ export async function getInvoice(req, res, next) {
     
     if (req.user.role === 'agent') {
       const client = await Client.findById(invoice.client);
-      if (client.createdBy.toString() !== req.user.id) {
+      if (!canAccessClient(req.user, client)) {
         return sendError(res, 403, 'You can only view invoices from your clients');
       }
     }
@@ -137,7 +143,7 @@ export async function createInvoice(req, res, next) {
     }
     
    
-    if (req.user.role === 'agent' && client.createdBy.toString() !== req.user.id) {
+    if (!canAccessClient(req.user, client)) {
       return sendError(res, 403, 'You can only create invoices for your own clients');
     }
     
@@ -159,6 +165,12 @@ export async function createInvoice(req, res, next) {
     const invoice = await Invoice.create({
       ...req.body,
       createdBy: req.user.id
+    });
+
+    await audit(req, 'invoice.create', {
+      entity: 'Invoice',
+      entityId: invoice._id,
+      details: { invoiceNumber: invoice.invoiceNumber, amount: invoice.amount }
     });
     
     sendJson(res, 201, {
@@ -205,6 +217,15 @@ export async function updateInvoice(req, res, next) {
       req.body,
       { new: true, runValidators: true }
     ).populate('client', 'name email');
+
+    const cancelled = req.body.status === 'cancelled';
+    await audit(req, cancelled ? 'invoice.cancel' : 'invoice.update', {
+      entity: 'Invoice',
+      entityId: invoice._id,
+      details: cancelled
+        ? { invoiceNumber: invoice.invoiceNumber, reason: req.body.cancelledReason }
+        : { invoiceNumber: invoice.invoiceNumber, fields: Object.keys(req.body) }
+    });
     
     sendJson(res, 200, {
       success: true,
@@ -236,6 +257,12 @@ export async function deleteInvoice(req, res, next) {
     }
     
     await invoice.deleteOne();
+
+    await audit(req, 'invoice.delete', {
+      entity: 'Invoice',
+      entityId: invoice._id,
+      details: { invoiceNumber: invoice.invoiceNumber, amount: invoice.amount }
+    });
     
     sendJson(res, 200, {
       success: true,
@@ -287,6 +314,12 @@ export async function addPayment(req, res, next) {
     
     
     await invoice.save();
+
+    await audit(req, 'invoice.payment', {
+      entity: 'Invoice',
+      entityId: invoice._id,
+      details: { invoiceNumber: invoice.invoiceNumber, amount: req.body.amount, method: req.body.paymentMethod }
+    });
     
     
     await invoice.populate([

@@ -5,7 +5,8 @@ import {
   createClient, 
   updateClient, 
   deleteClient,
-  getClientInvoices
+  getClientInvoices,
+  assignAgents
 } from '../controllers/client.controller.js';
 import { protect } from '../middleware/auth.js';
 import { authorize } from '../middleware/roles.js';
@@ -26,5 +27,6 @@ router.route('/:id')
 
 
 router.get('/:id/invoices', getClientInvoices);
+router.put('/:id/agents', authorize('admin', 'manager'), assignAgents);
 
 export default router;

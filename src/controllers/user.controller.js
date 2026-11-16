@@ -1,5 +1,7 @@
 import { User } from '../models/User.js';
+import { Client } from '../models/Client.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { audit } from '../utils/audit.js';
 import { validateUserUpdate } from '../utils/validation.js';
 
 
@@ -74,11 +76,19 @@ export async function updateUser(req, res, next) {
     }
     
     
+    const before = { role: user.role, active: user.active };
+
     user = await User.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true, runValidators: true }
     );
+
+    await audit(req, 'user.update', {
+      entity: 'User',
+      entityId: user._id,
+      details: { email: user.email, fields: Object.keys(req.body), before, after: { role: user.role, active: user.active } }
+    });
     
     sendJson(res, 200, {
       success: true,
@@ -112,6 +122,13 @@ export async function deleteUser(req, res, next) {
     }
     
     await user.deleteOne();
+    await Client.updateMany({ assignedAgents: user._id }, { $pull: { assignedAgents: user._id } });
+
+    await audit(req, 'user.delete', {
+      entity: 'User',
+      entityId: user._id,
+      details: { email: user.email, role: user.role }
+    });
     
     sendJson(res, 200, {
       success: true,

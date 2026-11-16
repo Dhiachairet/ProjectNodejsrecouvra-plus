@@ -1,4 +1,17 @@
 import mongoose from 'mongoose';
+import { ACTION_STATUSES, allowedTransitions } from '../workflows/collectionAction.workflow.js';
+
+const statusChangeSchema = new mongoose.Schema({
+  from: { type: String, enum: ACTION_STATUSES },
+  to: { type: String, enum: ACTION_STATUSES, required: true },
+  changedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  changedAt: { type: Date, default: Date.now },
+  note: String
+}, { _id: false });
 
 const collectionActionSchema = new mongoose.Schema({
   invoice: {
@@ -26,10 +39,11 @@ const collectionActionSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['planned', 'completed', 'cancelled', 'failed'],
+    enum: ACTION_STATUSES,
     default: 'planned',
     index: true
   },
+  statusHistory: [statusChangeSchema],
   notes: {
     type: String,
     trim: true
@@ -76,14 +90,18 @@ collectionActionSchema.virtual('isNextActionOverdue').get(function() {
   return this.nextActionDate && this.nextActionDate < new Date() && this.status !== 'completed';
 });
 
+collectionActionSchema.virtual('allowedTransitions').get(function() {
+  return allowedTransitions(this.status);
+});
+
 collectionActionSchema.virtual('actionTypeLabel').get(function() {
   const labels = {
-    phone_call: 'Appel téléphonique',
+    phone_call: 'Phone call',
     email: 'Email',
-    meeting: 'Rendez-vous',
-    reminder_letter: 'Lettre de rappel',
-    legal_notice: 'Mise en demeure',
-    visit: 'Visite sur place'
+    meeting: 'Meeting',
+    reminder_letter: 'Reminder letter',
+    legal_notice: 'Formal notice',
+    visit: 'On-site visit'
   };
   return labels[this.actionType] || this.actionType;
 });

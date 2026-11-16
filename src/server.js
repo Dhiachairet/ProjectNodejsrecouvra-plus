@@ -1,103 +1,30 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import 'dotenv/config';
 
+import app from './app.js';
 import { connectDB } from './config/db.js';
-import { errorHandler } from './middleware/errorHandler.js';
-
-
-import authRoutes from './routes/auth.routes.js';
-import userRoutes from './routes/user.routes.js';
-import clientRoutes from './routes/client.routes.js';
-import invoiceRoutes from './routes/invoice.routes.js';
-import collectionRoutes from './routes/collection.routes.js';
-import statsRoutes from './routes/stats.routes.js';
-
-dotenv.config();
-
-const app = express();
-
-
-app.use(express.json({ limit: '1mb' }));
-app.use(express.urlencoded({ extended: true }));
-
-
-app.use(cors());
-
-
-app.get('/health', (req, res) => {
-  res.status(200).json({ 
-    success: true,
-    status: 'ok', 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
-});
-
-
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/clients', clientRoutes);
-app.use('/api/invoices', invoiceRoutes);
-app.use('/api/collections', collectionRoutes);
-app.use('/api/stats', statsRoutes);
-
-
-app.use('*', (req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: `Cannot ${req.method} ${req.originalUrl}` 
-  });
-});
-
-
-app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 
 
 const startServer = async () => {
   try {
-   
+
     await connectDB();
-    
-    
+
+
     const server = app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-      
-     
-      try {
-        import('swagger-ui-express').then(swaggerUi => {
-          import('yamljs').then(YAML => {
-            const swaggerDocument = YAML.load('./swagger.yaml');
-            app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-            console.log(` Swagger docs: http://localhost:${PORT}/api-docs`);
-          }).catch(err => {
-            console.log(' Swagger YAML load failed:', err.message);
-          });
-        }).catch(err => {
-          console.log(' Swagger UI import failed:', err.message);
-        });
-      } catch (swaggerError) {
-        console.log(' Swagger setup skipped:', swaggerError.message);
-      }
-      
-      console.log(`Auth routes: /api/auth/*`);
-      console.log(`User routes: /api/users/*`);
-      console.log(`Client routes: /api/clients/*`);
-      console.log(`Invoice routes: /api/invoices/*`);
-      console.log(`Collection routes: /api/collections/*`);
-      console.log(`Stats routes: /api/stats/*`);
+      console.log(`Swagger docs: http://localhost:${PORT}/api-docs`);
     });
 
-    
-    process.on('unhandledRejection', (err, promise) => {
+
+    process.on('unhandledRejection', (err) => {
       console.log(`Unhandled Rejection Error: ${err.message}`);
       server.close(() => process.exit(1));
     });
 
-   
+
     process.on('uncaughtException', (err) => {
       console.log(`Uncaught Exception Error: ${err.message}`);
       process.exit(1);
@@ -110,5 +37,3 @@ const startServer = async () => {
 };
 
 startServer();
-
-export default app;

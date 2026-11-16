@@ -1,16 +1,21 @@
 import { Client } from '../models/Client.js';
 import { Invoice } from '../models/Invoice.js';
 import { CollectionAction } from '../models/CollectionAction.js';
-import { validateClient } from '../utils/validation.js';
+import { User } from '../models/User.js';
+import { validateClient, validateClientUpdate, validateAssignAgents } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { clientScope, canAccessClient } from '../utils/access.js';
+import { audit } from '../utils/audit.js';
+
+const AGENT_FIELDS = 'firstName lastName email';
 
 
 export async function getClients(req, res, next) {
   try {
-    const { page = 1, limit = 10, search, sortBy = 'name', order = 'asc' } = req.query;
+    const { page = 1, limit = 10, search, agent, sortBy = 'name', order = 'asc' } = req.query;
     
     
-    let query = {};
+    let query = clientScope(req.user);
     
     
     if (search) {
@@ -18,8 +23,8 @@ export async function getClients(req, res, next) {
     }
     
     
-    if (req.user.role === 'agent') {
-      query.createdBy = req.user.id;
+    if (agent && req.user.role !== 'agent') {
+      query.assignedAgents = agent;
     }
     
     
@@ -32,6 +37,7 @@ export async function getClients(req, res, next) {
     
     const clients = await Client.find(query)
       .populate('createdBy', 'firstName lastName email')
+      .populate('assignedAgents', AGENT_FIELDS)
       .sort(sort)
       .skip(skip)
       .limit(parseInt(limit));
@@ -56,7 +62,8 @@ export async function getClients(req, res, next) {
 export async function getClient(req, res, next) {
   try {
     const client = await Client.findById(req.params.id)
-      .populate('createdBy', 'firstName lastName email');
+      .populate('createdBy', 'firstName lastName email')
+      .populate('assignedAgents', AGENT_FIELDS);
     
     if (!client) {
       return sendError(res, 404, 'Client not found');
@@ -116,6 +123,8 @@ export async function createClient(req, res, next) {
       ...req.body,
       createdBy: req.user.id
     });
+
+    await audit(req, 'client.create', { entity: 'Client', entityId: client._id, details: { name: client.name } });
     
     sendJson(res, 201, {
       success: true,
@@ -129,6 +138,11 @@ export async function createClient(req, res, next) {
 
 export async function updateClient(req, res, next) {
   try {
+    const { error } = validateClientUpdate.validate(req.body);
+    if (error) {
+      return sendError(res, 400, error.details[0].message);
+    }
+
     let client = await Client.findById(req.params.id);
     
     if (!client) {
@@ -136,8 +150,8 @@ export async function updateClient(req, res, next) {
     }
     
     
-    if (req.user.role === 'agent' && client.createdBy.toString() !== req.user.id) {
-      return sendError(res, 403, 'You can only update clients you created');
+    if (!canAccessClient(req.user, client)) {
+      return sendError(res, 403, 'You can only update your own clients');
     }
     
     
@@ -145,7 +159,10 @@ export async function updateClient(req, res, next) {
       req.params.id,
       req.body,
       { new: true, runValidators: true }
-    ).populate('createdBy', 'firstName lastName email');
+    ).populate('createdBy', 'firstName lastName email')
+      .populate('assignedAgents', AGENT_FIELDS);
+
+    await audit(req, 'client.update', { entity: 'Client', entityId: client._id, details: { fields: Object.keys(req.body) } });
     
     sendJson(res, 200, {
       success: true,
@@ -172,6 +189,8 @@ export async function deleteClient(req, res, next) {
     }
     
     await client.deleteOne();
+
+    await audit(req, 'client.delete', { entity: 'Client', entityId: client._id, details: { name: client.name } });
     
     sendJson(res, 200, {
       success: true,
@@ -199,6 +218,46 @@ export async function getClientInvoices(req, res, next) {
       success: true,
       count: invoices.length,
       invoices
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+export async function assignAgents(req, res, next) {
+  try {
+    const { error, value } = validateAssignAgents.validate(req.body);
+    if (error) {
+      return sendError(res, 400, error.details[0].message);
+    }
+
+    const client = await Client.findById(req.params.id);
+
+    if (!client) {
+      return sendError(res, 404, 'Client not found');
+    }
+
+
+    const agentCount = await User.countDocuments({ _id: { $in: value.agents }, role: 'agent', active: true });
+    if (agentCount !== value.agents.length) {
+      return sendError(res, 400, 'Only active users with the agent role can be assigned to a client');
+    }
+
+    const before = client.assignedAgents.map(String);
+    client.assignedAgents = value.agents;
+    await client.save();
+    await client.populate('assignedAgents', AGENT_FIELDS);
+
+    await audit(req, 'client.assign_agents', {
+      entity: 'Client',
+      entityId: client._id,
+      details: { before, after: value.agents }
+    });
+
+    sendJson(res, 200, {
+      success: true,
+      client
     });
   } catch (error) {
     next(error);

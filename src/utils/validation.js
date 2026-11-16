@@ -147,12 +147,67 @@ export const validateInvoiceUpdate = Joi.object({
 });
 
 
+// Status is not editable here: it only changes through PATCH /collections/:id/status (workflow rules).
 export const validateCollectionActionUpdate = Joi.object({
-  status: Joi.string().valid('planned', 'completed', 'cancelled', 'failed'),
   notes: Joi.string(),
   result: Joi.string(),
   nextActionDate: Joi.date().greater('now').allow(null),
   duration: Joi.number().min(0).allow(null)
 }).min(1).messages({
   'object.min': 'At least one field must be provided for update'
+});
+
+const objectId = Joi.string().hex().length(24).messages({
+  'string.hex': 'Invalid identifier',
+  'string.length': 'Invalid identifier'
+});
+
+export const MAX_AGENTS_PER_CLIENT = 3;
+
+export const validateClientUpdate = validateClient
+  .fork(['name', 'email', 'phone'], schema => schema.optional())
+  .min(1)
+  .messages({
+    'object.min': 'At least one field must be provided for update'
+  });
+
+
+export const validateAssignAgents = Joi.object({
+  agents: Joi.array().items(objectId).unique().max(MAX_AGENTS_PER_CLIENT).required().messages({
+    'array.max': `A client can have at most ${MAX_AGENTS_PER_CLIENT} assigned agents`,
+    'array.unique': 'An agent can only be assigned once',
+    'any.required': 'Agents list is required'
+  })
+});
+
+
+export const validateStatusTransition = Joi.object({
+  status: Joi.string().valid('planned', 'completed', 'failed', 'cancelled').required().messages({
+    'any.only': 'Status must be one of: planned, completed, failed, cancelled',
+    'any.required': 'Target status is required'
+  }),
+  result: Joi.string().allow('').max(1000),
+  actionDate: Joi.date()
+});
+
+
+export const validateStatsQuery = Joi.object({
+  from: Joi.date(),
+  to: Joi.date().when('from', { is: Joi.exist(), then: Joi.date().min(Joi.ref('from')) }).messages({
+    'date.min': 'End date must be after start date'
+  }),
+  agent: objectId,
+  client: objectId
+});
+
+
+export const validateAuditQuery = Joi.object({
+  page: Joi.number().integer().min(1).default(1),
+  limit: Joi.number().integer().min(1).max(100).default(20),
+  user: objectId,
+  action: Joi.string().pattern(/^[a-z_.]+$/).max(50),
+  entity: Joi.string().valid('User', 'Client', 'Invoice', 'CollectionAction'),
+  entityId: objectId,
+  from: Joi.date(),
+  to: Joi.date()
 });

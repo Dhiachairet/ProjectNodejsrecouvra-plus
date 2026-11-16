@@ -42,9 +42,17 @@ const clientSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
+    index: true
   },
- 
+
+  // N-N: a client is followed by several agents, an agent follows several clients
+  assignedAgents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    index: true
+  }],
+
   totalInvoices: {
     type: Number,
     default: 0
