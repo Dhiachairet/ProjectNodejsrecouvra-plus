@@ -212,11 +212,33 @@ export async function updateInvoice(req, res, next) {
     }
     
     
-    invoice = await Invoice.findByIdAndUpdate(
+       invoice = await Invoice.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true, runValidators: true }
     ).populate('client', 'name email');
+
+    // BUG A FIX: Manually trigger the client totals recalculation
+    // because findByIdAndUpdate bypasses the post('save') hook.
+    if (req.body.status === 'cancelled') {
+      const InvoiceModel = Invoice; 
+      const stats = await InvoiceModel.aggregate([
+        { $match: { client: invoice.client._id, status: { $ne: 'cancelled' } } },
+        { $group: {
+          _id: '$client',
+          totalInvoices: { $sum: 1 },
+          totalPaid: { $sum: '$paidAmount' },
+          totalUnpaid: { $sum: { $subtract: ['$amount', '$paidAmount'] } }
+        }}
+      ]);
+      const result = stats.length > 0 ? stats[0] : { totalInvoices: 0, totalPaid: 0, totalUnpaid: 0 };
+      
+      await Client.findByIdAndUpdate(invoice.client._id, {
+        totalInvoices: result.totalInvoices,
+        totalPaid: result.totalPaid,
+        totalUnpaid: result.totalUnpaid
+      });
+    }
 
     const cancelled = req.body.status === 'cancelled';
     await audit(req, cancelled ? 'invoice.cancel' : 'invoice.update', {
