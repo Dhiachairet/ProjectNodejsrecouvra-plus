@@ -320,22 +320,41 @@ export async function addPayment(req, res, next) {
     }
     
     
-    const remainingAmount = invoice.remainingAmount;
+        const remainingAmount = invoice.remainingAmount;
     if (req.body.amount > remainingAmount) {
       return sendError(res, 400, `Payment amount (${req.body.amount}) exceeds remaining balance of ${remainingAmount}`);
     }
-    
-    
-    invoice.payments.push({
+
+    const paymentData = {
       ...req.body,
       receivedBy: req.user.id,
       paymentDate: req.body.paymentDate || new Date()
-    });
-    
-    invoice.paidAmount += req.body.amount;
-    
-    
-    await invoice.save();
+    };
+
+    // BUG B FIX: Use an atomic findOneAndUpdate to prevent race conditions.
+    // It only updates if the invoice has NOT been paid yet AND the payment won't exceed the amount.
+    const updatedInvoice = await Invoice.findOneAndUpdate(
+      { 
+        _id: invoice._id, 
+        status: { $ne: 'paid' },
+        // Only match if (amount - paidAmount) >= the new payment amount
+        $expr: { $lte: [{ $add: ['$paidAmount', req.body.amount] }, '$amount'] }
+      },
+      {
+        $push: { payments: paymentData },
+        $inc: { paidAmount: req.body.amount }
+      },
+      { new: true, runValidators: true }
+    );
+
+    // If updatedInvoice is null, a simultaneous request beat us to it, or the balance changed.
+    if (!updatedInvoice) {
+      return sendError(res, 400, 'Payment failed: balance changed or exceeds remaining amount');
+    }
+
+    // Save to trigger the post('save') hook for client totals
+    // We temporarily bypass validation because we just did the atomic update
+    await updatedInvoice.save();
 
     await audit(req, 'invoice.payment', {
       entity: 'Invoice',
