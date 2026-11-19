@@ -1,0 +1,1893 @@
+﻿
+> recouvra-plus@1.0.0 test:security
+> node --experimental-vm-modules node_modules/jest/bin/jest.js tests/security
+
+npm : (node:2320) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+Au caractère Ligne:2 : 526
++ ... >a+x.warningCount,0),'warnings')"; npm run test:security 2>&1 | Out-F ...
++                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:2320) Exp...nge at any time:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11880) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:5016) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15396) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11132) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6812) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:13400) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS tests/security/headers-cors.test.js (5.298 s)
+PASS tests/security/password-policy.test.js (7.013 s)
+PASS tests/security/register.test.js (7.286 s)
+PASS tests/security/rate-limit.test.js (7.373 s)
+PASS tests/security/email-validation.test.js
+PASS tests/security/auth-token.test.js
+PASS tests/security/sort-injection.test.js (9.601 s)
+  ● Console
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: name, email, company, createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid order. Allowed values: asc, desc
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:13:11)
+          at getClients (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\client.controller.js:17:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getClients (src/controllers/client.controller.js:55:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: invoiceNumber, amount, paidAmount, issueDate, dueDate, status, 
+createdAt, updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid order. Allowed values: asc, desc
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:13:11)
+          at getInvoices (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\invoice.controller.js:24:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getInvoices (src/controllers/invoice.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid sortBy. Allowed values: actionDate, actionType, status, nextActionDate, createdAt, 
+updatedAt
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:10:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+    console.error
+      Error: AppError: Invalid order. Allowed values: asc, desc
+          at buildSort (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\utils\sort.js:13:11)
+          at getCollectionActions (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\controllers\collection.controller.js:29:18)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:149:13)
+          at Route.dispatch (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\route.js:119:3)
+          at Layer.handle [as handle_request] (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\layer.js:95:5)
+          at C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:284:15
+          at Function.process_params (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:346:12)
+          at next (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\node_modules\express\lib\router\index.js:280:10)
+          at protect (C:\Users\Ahmed\OneDrive\Bureau\Rahma\Test 
+automatisation\ProjectNodejsrecouvra-plus\src\middleware\auth.js:33:7)
+          at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+        statusCode: 400,
+        isOperational: true
+      }
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m [36mexport[39m [36mfunction[39m errorHandler(err[33m,[39m req[33m,[39m res[33m,[39m 
+next) {
+    [31m[1m>[22m[39m[90m 4 |[39m   console[33m.[39merror([32m'Error:'[39m[33m,[39m err)[33m;[39m
+     [90m   |[39m           [31m[1m^[22m[39m
+     [90m 5 |[39m
+     [90m 6 |[39m   [90m// Headers already sent: let Express close the connection with its default handler.[39m
+     [90m 7 |[39m   [36mif[39m (res[33m.[39mheadersSent) [36mreturn[39m next(err)[33m;[39m[0m
+
+      at errorHandler (src/middleware/errorHandler.js:4:11)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:71:5)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at param (node_modules/express/lib/router/index.js:365:14)
+      at param (node_modules/express/lib/router/index.js:376:14)
+      at Function.process_params (node_modules/express/lib/router/index.js:421:3)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at Layer.handle_error (node_modules/express/lib/router/layer.js:67:12)
+      at trim_prefix (node_modules/express/lib/router/index.js:326:13)
+      at node_modules/express/lib/router/index.js:286:9
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at node_modules/express/lib/router/index.js:646:15
+      at next (node_modules/express/lib/router/index.js:265:14)
+      at next (node_modules/express/lib/router/route.js:141:14)
+      at next (node_modules/express/lib/router/route.js:145:7)
+      at getCollectionActions (src/controllers/collection.controller.js:82:5)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at next (node_modules/express/lib/router/route.js:149:13)
+      at Route.dispatch (node_modules/express/lib/router/route.js:119:3)
+      at Layer.handle [as handle_request] (node_modules/express/lib/router/layer.js:95:5)
+      at node_modules/express/lib/router/index.js:284:15
+      at Function.process_params (node_modules/express/lib/router/index.js:346:12)
+      at next (node_modules/express/lib/router/index.js:280:10)
+      at protect (src/middleware/auth.js:33:7)
+
+PASS tests/security/portfolio-isolation.test.js (9.693 s)
+PASS tests/security/role-matrix.test.js (14.174 s)
+
+Test Suites: 9 passed, 9 total
+Tests:       227 passed, 227 total
+Snapshots:   0 total
+Time:        14.628 s, estimated 17 s
+Ran all test suites matching /tests\\security/i.

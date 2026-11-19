@@ -41,19 +41,18 @@ export async function api(path, { method = 'GET', body, query } = {}) {
 export function useApi(path, query) {
   const [state, setState] = useState({ data: null, error: null, loading: Boolean(path) });
   const [version, setVersion] = useState(0);
-  const key = path && `${path}?${JSON.stringify(query ?? {})}`;
+  // The query object is a new reference on every render, so the effect depends on its serialized value.
+  const queryKey = JSON.stringify(query ?? {});
 
   useEffect(() => {
     if (!path) return;
     let active = true;
     setState(previous => ({ ...previous, loading: true }));
-    api(path, { query })
+    api(path, { query: JSON.parse(queryKey) })
       .then(data => active && setState({ data, error: null, loading: false }))
       .catch(error => active && setState({ data: null, error: error.message, loading: false }));
     return () => { active = false; };
-    // `key` captures path + query by value
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, version]);
+  }, [path, queryKey, version]);
 
   const reload = useCallback(() => setVersion(v => v + 1), []);
   return { ...state, reload };

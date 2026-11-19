@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { emailValidator } from '../utils/email.js';
 
 const clientSchema = new mongoose.Schema({
   name: {
@@ -12,7 +13,7 @@ const clientSchema = new mongoose.Schema({
     required: [true, 'Email is required'],
     lowercase: true,
     trim: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
+    validate: emailValidator
   },
   phone: {
     type: String,

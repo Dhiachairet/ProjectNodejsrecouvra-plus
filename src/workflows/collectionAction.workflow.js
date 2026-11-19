@@ -14,8 +14,11 @@ export const ACTION_TRANSITIONS = Object.freeze({
   cancelled: []
 });
 
+// Map lookup: an unknown status (even "constructor" or "__proto__") can never resolve to an inherited property.
+const TRANSITIONS_BY_STATUS = new Map(Object.entries(ACTION_TRANSITIONS));
+
 export function allowedTransitions(status) {
-  return ACTION_TRANSITIONS[status] ?? [];
+  return TRANSITIONS_BY_STATUS.get(status) ?? [];
 }
 
 // Returns null when the transition is allowed, otherwise { status, message } describing the refusal.

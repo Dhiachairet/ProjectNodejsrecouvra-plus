@@ -2,6 +2,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import security from 'eslint-plugin-security';
+import reactHooks from 'eslint-plugin-react-hooks';
 
 export default [
     {
@@ -9,6 +10,14 @@ export default [
     },
     js.configs.recommended,
     security.configs.recommended,
+    {
+        files: ['frontend/src/**/*.js'],
+        plugins: { 'react-hooks': reactHooks },
+        rules: {
+            'react-hooks/rules-of-hooks': 'error',
+            'react-hooks/exhaustive-deps': 'warn'
+        }
+    },
     {
         languageOptions: {
             globals: {

@@ -6,9 +6,12 @@ export function useForm(initialValues) {
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
 
+  // Only own properties are read, so names like "constructor" or "__proto__" never reach the prototype chain.
+  const read = (name) => (Object.hasOwn(values, name) ? Reflect.get(values, name) ?? '' : '');
+
   const bind = (name) => ({
     name,
-    value: values[name] ?? '',
+    value: read(name),
     onChange: (event) => setValues(current => ({ ...current, [name]: event.target.value }))
   });
 

@@ -1,11 +1,13 @@
 import { sendJson } from '../utils/send.js';
 
 export function errorHandler(err, req, res, next) {
+  console.error('Error:', err);
+
+  // Headers already sent: let Express close the connection with its default handler.
+  if (res.headersSent) return next(err);
+
   let error = { ...err };
   error.message = err.message;
-  
-  
-  console.error('Error:', err);
 
  
   if (err.name === 'CastError') {

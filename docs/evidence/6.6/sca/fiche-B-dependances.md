@@ -2,7 +2,7 @@
 
 Sources :
 - Avant : `sca/npm-audit-backend-before-2026-11-17.json` (identifiants GHSA, plages vulnérables, direct/indirect).
-- Après : `sca/npm-audit-backend-after-2026-11-17.txt`.
+- Après : `sca/npm-audit-backend-after-qs-2026-11-19.txt` (état final : 2 moderate, 0 en production). L'ancien run `sca/npm-audit-backend-after-2026-11-17.txt` (39) est un état intermédiaire.
 - « Version actuelle » : version lue dans `node_modules/` du projet (état après correction).
 - Les CVE ne figurent pas dans npm audit : seuls les GHSA sont indiqués.
 - « Version qui corrige » : première version hors de la plage vulnérable donnée par npm audit.
@@ -23,14 +23,18 @@ Sources :
 | brace-expansion | 1.1.22 | Indirect | plusieurs GHSA (dont GHSA-f886-m6hf-6m8v, GHSA-jxxr-4gwj-5jf2) | > 1.1.20 (branche 1.x) | Mis à jour. |
 | browserslist | 4.29.6 | Indirect | GHSA-c83g-rgw3-j3cx, GHSA-73wf-gq98-2v4g | > 4.28.6 | Mis à jour. |
 
-## Restants (audit « after » : 39 vulnérabilités, 2 moderate / 37 high)
+## Corrigés par l'override `qs` (2026-11-19)
+
+| Paquet | Version avant → après | GHSA | Correction |
+|---|---|---|---|
+| qs | 6.14.3 → 6.17.1 (express, body-parser, supertest) | GHSA-q8mj-m7cp-5q26, GHSA-x5fp-wj9c-mxmx, GHSA-4mjr-xmp4-gh2g, GHSA-6pq8-jhm2-2vcw | `"overrides": { "qs": "^6.17.1" }` dans `package.json`, puis `npm install`. `npm ls qs` : 6.17.1 partout. |
+| picomatch, anymatch, chokidar, micromatch, readdirp (jest, nodemon) | signalés (intermédiaire : 39) → plus signalés | GHSA-fc5q-39xc-vjpf, GHSA-3v7f-55p6-f55p, GHSA-c2c7-rcm5-vvqj | Plus présents dans l'audit final (`npm audit` : 2 vulnérabilités seulement). |
+
+## Restants (audit final : 2 moderate, 0 en production)
 
 | Paquet | Version actuelle | Direct ou indirect | GHSA | Version qui corrige | Décision et raison |
 |---|---|---|---|---|---|
-| qs | 6.14.3 | Indirect | GHSA-q8mj-m7cp-5q26, GHSA-x5fp-wj9c-mxmx, GHSA-4mjr-xmp4-gh2g, GHSA-6pq8-jhm2-2vcw | > 6.16.0 (plage vulnérable 2.2.5 – 6.16.0) | À corriger : npm audit indique `npm audit fix` (sans changement cassant). Aussi relevé par Dependency-Check (qs 6.14.3, 4 vulnérabilités). |
-| picomatch | 2.3.2 | Indirect (via anymatch, chokidar, outillage jest/nodemon) | GHSA-fc5q-39xc-vjpf (après) ; GHSA-3v7f-55p6-f55p, GHSA-c2c7-rcm5-vvqj (avant) | Aucune version corrigée indiquée dans la plage `*` | Outillage de dev, non déployé en production. À suivre ; `npm audit fix --force` proposé (jest@26.6.3, changement cassant) : non appliqué. |
-| minimatch | 10.2.6 (nodemon) ; 11.0.9 (eslint) ; 3.1.5 (racine) | Indirect (via nodemon) | GHSA-g3hv-75wg-m249 | npm propose nodemon@3.1.11 (changement cassant) | Outillage de dev. Non appliqué : correctif cassant. À suivre. |
-| nodemon | 3.1.14 | Direct (dev) | — (hérite de minimatch/chokidar) | — | Outil de développement uniquement. |
-| anymatch, chokidar, micromatch, readdirp et autres (jest, nodemon) | — | Indirect | hérité de picomatch / minimatch | voir ci-dessus | Propagation de 3 racines (minimatch, picomatch, qs) : explique le passage de 16 à 39 au total. |
+| minimatch | 10.2.6 (nodemon) | Indirect (via nodemon) | GHSA-g3hv-75wg-m249 | npm propose nodemon@3.1.11 (changement cassant) | Outillage de dev, non déployé en production. Non appliqué : correctif cassant. À suivre. |
+| nodemon | 3.1.14 | Direct (dev) | — (hérite de minimatch) | — | Outil de développement uniquement. |
 
-Remarque : la plage vulnérable de qs (≤ 6.16.0) contient la version installée 6.14.3, donc qs est resté signalé. Dependency-Check (`sca/dependency-check-2026-11-17.html`) signale aussi formidable 2.1.5 (LOW), non couvert par npm audit.
+Remarque : `npm audit --omit=dev` donne 0 vulnérabilité. Dependency-Check (`sca/dependency-check-2026-11-17.html`) n'a pas été relancé : ses constats qs et picomatch datent d'avant le correctif ; il signale aussi formidable 2.1.5 (LOW), non couvert par npm audit.

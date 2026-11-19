@@ -8,8 +8,8 @@ Projet : Recouvra Plus. Toutes les données proviennent des fichiers de `docs/ev
 |---|---|---|---|
 | Jest (tests de sécurité, 8 suites) | 67 tests en échec / 198 | 0 en échec / 198 | `jest-tests/security-test-before--2026-11-18.txt`, `jest-tests/security-test-after--2026-11-18.txt` |
 | Manuel D01-D08 | Non disponible — à régénérer | Non disponible — à régénérer | aucun fichier D01-D08 présent |
-| SAST ESLint security | 2 erreurs, 4 warnings | 2 erreurs, 4 warnings (identiques) | `sast/eslint-security-before-2026-11-17.json`, `sast/eslint-security-after-2026-11-18.json` |
-| SCA backend (npm audit) | 16 (2 crit., 9 high, 4 mod., 1 low) | 39 (0 crit., 37 high, 2 mod.) | `sca/npm-audit-backend-before-2026-11-17.txt`, `sca/npm-audit-backend-after-2026-11-17.txt` |
+| SAST ESLint security | 2 erreurs, 4 warnings | **0 erreur, 0 warning** (après correction ESLint du 2026-11-19) | `sast/eslint-security-before-2026-11-17.json`, `sast/eslint-security-after-2026-11-19.json` |
+| SCA backend (npm audit) | 16 (2 crit., 9 high, 4 mod., 1 low) | 2 (0 crit., 0 high, 2 mod. ; 0 en production) | `sca/npm-audit-backend-before-2026-11-17.txt`, `sca/npm-audit-backend-after-qs-2026-11-19.txt` |
 | SCA frontend (npm audit) | 5 (high) | 0 | `sca/npm-audit-frontend-before-2026-11-17.txt`, `sca/npm-audit-frontend-after-2026-11-18.txt` |
 | DAST ZAP baseline (H/M/L/I) | 0 / 3 / 5 / 3 | 0 / 2 / 2 / 3 | `dast/baseline-*` |
 | DAST ZAP full | 0 / 5 / 5 / 4 | 0 / 3 / 2 / 4 | `dast/full-*` |
@@ -67,35 +67,43 @@ Tests en échec « avant » (= comportement vulnérable prouvé) :
 
 ## 4. SAST (ESLint security)
 
-Sources : `sast/eslint-security-before-2026-11-17.json` (33 fichiers), `sast/eslint-security-after-2026-11-18.json` (35 fichiers).
+Sources : `sast/eslint-security-before-2026-11-17.json` (33 fichiers), `sast/eslint-security-after-2026-11-19.json` (36 fichiers, commande `npx eslint src frontend/src`). Le run intermédiaire `sast/eslint-security-after-2026-11-18.json` (2 erreurs, 4 warnings) est conservé : il précède la correction ESLint.
 
 | | Avant | Après |
 |---|---|---|
-| Erreurs | 2 | 2 |
-| Warnings | 4 | 4 |
+| Erreurs | 2 | 0 |
+| Warnings | 4 | 0 |
 
-Règles déclenchées (identiques) :
-- Erreurs : `no-unused-vars` (`errorHandler.js:3`), `react-hooks/exhaustive-deps` règle introuvable (`frontend/src/api.js:55`, problème de config).
-- Warnings : `security/detect-object-injection` ×2 (`useForm.js:11`, `collectionAction.workflow.js:18`), `security/detect-unsafe-regex` ×2 (`Client.js:15`, `User.js:11`).
+Corrections appliquées :
+- `no-unused-vars` (`errorHandler.js`) : `next` conservé (signature à 4 paramètres) et utilisé : `if (res.headersSent) return next(err)`.
+- `react-hooks/exhaustive-deps` (`frontend/src/api.js`) : plugin `eslint-plugin-react-hooks` installé et configuré dans `eslint.config.js` ; `eslint-disable` supprimé ; dépendances de `useApi` corrigées (`path`, `queryKey`, `version`).
+- `security/detect-object-injection` : `useForm.js` (lecture limitée aux propriétés propres) et `collectionAction.workflow.js` (recherche via `Map`).
+- `security/detect-unsafe-regex` : regex d'email (risque ReDoS) de `Client.js` et `User.js` remplacée par `isValidEmail` (`src/utils/email.js`, temps linéaire). Équivalence vérifiée sur 400 000 chaînes aléatoires (0 divergence) ; tests dans `tests/security/email-validation.test.js`.
 
-Conclusion : aucune faille SAST corrigée, aucune introduite par le nouveau code (35 fichiers analysés).
+Aucune règle désactivée. Hors périmètre de ce rapport : 24 warnings `detect-object-injection` subsistent dans `scripts/seed.js` et `tests/` (non analysés par la commande ci-dessus).
+
+Tests après correction : `jest-tests/security-test-after-eslint-2026-11-19.txt` (`npm run test:security`) : 9 suites, 227 tests OK ; `npm test` complet : 10 suites, 233 tests OK.
+
+Conclusion : les 6 constats SAST sont corrigés, aucun constat introduit par le nouveau code (36 fichiers analysés).
 
 ## 5. SCA (npm audit)
 
-### Backend — `sca/npm-audit-backend-before-2026-11-17.txt` / `sca/npm-audit-backend-after-2026-11-17.txt`
+### Backend — `sca/npm-audit-backend-before-2026-11-17.txt` / `sca/npm-audit-backend-after-qs-2026-11-19.txt`
 
 | Sévérité | Avant | Après |
 |---|---|---|
 | Critical | 2 | 0 |
-| High | 9 | 37 |
+| High | 9 | 0 |
 | Moderate | 4 | 2 |
 | Low | 1 | 0 |
-| **Total** | **16** | **39** |
+| **Total** | **16** | **2** |
 
 Avant : paquets `mongoose` et `proxy-addr` (critical), `body-parser`, `joi`, `path-to-regexp`, `qs`, `minimatch`, `picomatch`, `form-data`, `ip-address`, `js-yaml`, `brace-expansion`, `browserslist`, `baseline-browser-mapping`, etc.
-Après : seules racines `minimatch`, `picomatch`, `qs`, propagées à l'outillage de dev (jest, nodemon, anymatch, chokidar, micromatch, readdirp…).
+Après : seules restent `minimatch` (GHSA-g3hv-75wg-m249) et `nodemon` qui en hérite, deux vulnérabilités moderate d'outillage de dev. `npm audit --omit=dev` : **0 vulnérabilité en production**.
 
-⚠️ Le total **augmente** (16 → 39), mais c'est un effet de comptage de dépendances transitives de dev ; les critical et les paquets runtime (mongoose, joi, body-parser, path-to-regexp, proxy-addr) ne sont plus signalés. Ne pas présenter cela comme une réduction du nombre brut.
+Correctif `qs` (2026-11-19) : `"overrides": { "qs": "^6.17.1" }` dans `package.json` ; `npm ls qs` montre qs 6.17.1 pour express, body-parser et supertest/superagent/formidable. Cela a supprimé les vulnérabilités `qs` et `picomatch` (et leurs propagations jest/chokidar), d'où 39 → 2. L'ancien run `sca/npm-audit-backend-after-2026-11-17.txt` (39) est conservé comme état intermédiaire.
+
+Reste : `minimatch` via `nodemon` ; le correctif proposé par npm (`npm audit fix --force`, nodemon@3.1.11) est un changement cassant, non appliqué, dev uniquement.
 
 ### Frontend
 
@@ -216,7 +224,7 @@ Preuve de substitution automatisée : tests Jest `portfolio-isolation` et `regis
 | A05 | HTTP Only Site | ZAP full | Justifié (test sans TLS) | `dast/full-after-2026-11-18.html` |
 | A07 Auth. Failures | Pas de limite sur `/login` | Jest | Corrigé | Jest `rate-limit` |
 | A07 | Mot de passe de 6 caractères | Jest | Corrigé | Jest `password-policy` |
-| A06 Vulnerable Components | Dépendances vulnérables | npm audit, Dependency-Check | Partiel : critical 2 → 0 ; frontend 5 → 0 ; backend dev-deps restantes | `sca/*` |
+| A06 Vulnerable Components | Dépendances vulnérables | npm audit, Dependency-Check | Partiel : critical 2 → 0 ; frontend 5 → 0 ; backend 16 → 2 (dev uniquement) | `sca/*` |
 | A02/A07 (doc) | JWT dans localStorage | Revue de code | Documenté, non corrigé | `docs/SECURITY.md` |
 
 ## 9. Conclusion
@@ -231,15 +239,15 @@ Calculs basés uniquement sur les chiffres ci-dessus :
 | ZAP API (Medium+Low) | 5 → 1 | 80 % |
 | npm audit frontend | 5 → 0 | 100 % |
 | npm audit backend critical | 2 → 0 | 100 % |
-| npm audit backend total | 16 → 39 | dégradation du total brut (dev-deps transitives) |
-| ESLint | 6 → 6 | 0 % |
+| npm audit backend total | 16 → 2 | 87,5 % (0 en production) |
+| ESLint | 6 → 0 | 100 % |
 
 Alertes restantes et justification :
 - **CSP `style-src 'unsafe-inline'` / Wildcard Directive** : CSP par défaut de Helmet (compatibilité Swagger/UI) ; à durcir par une CSP personnalisée.
 - **COEP / Permissions-Policy** : non définis par défaut par Helmet ; à ajouter si requis.
 - **HTTP Only Site** : environnement de test sans TLS ; à traiter au déploiement (HTTPS).
-- **Dépendances backend** (minimatch, picomatch, qs) : à mettre à jour (`npm audit fix`) ; surtout outillage de dev.
-- **ESLint** : erreur `no-unused-vars` préexistante et règle `react-hooks` mal configurée.
+- **Dépendances backend** : `minimatch` (via `nodemon`, dev uniquement, 2 moderate) ; correctif cassant non appliqué. `qs` et `picomatch` corrigés (override `qs` 6.17.1). Dependency-Check (2026-11-17) n'a pas été relancé : ses constats qs/picomatch ne reflètent plus l'état actuel.
+- **ESLint** : plus d'alerte sur `src` et `frontend/src` ; 24 warnings `detect-object-injection` restent dans `scripts/seed.js` et `tests/` (hors périmètre).
 - **JWT en localStorage** : documenté ; migration cookies HttpOnly/Secure/SameSite non faite.
 
 À régénérer pour un dossier complet : D01-D08 (avant/après), captures Burp (4), Dependency-Check « avant », fiches A et B, passes Jest par fichier.
