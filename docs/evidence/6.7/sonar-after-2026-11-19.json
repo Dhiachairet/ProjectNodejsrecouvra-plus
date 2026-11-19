@@ -1,0 +1,555 @@
+{
+  "analysisDate": "2026-11-19T17:24:56+0000",
+  "project": [
+    {
+      "metric": "complexity",
+      "value": "753"
+    },
+    {
+      "metric": "duplicated_lines_density",
+      "value": "0.0",
+      "bestValue": true
+    },
+    {
+      "metric": "software_quality_security_rating",
+      "value": "4.0",
+      "bestValue": false
+    },
+    {
+      "metric": "functions",
+      "value": "344"
+    },
+    {
+      "metric": "software_quality_security_issues",
+      "value": "4",
+      "bestValue": false
+    },
+    {
+      "metric": "sqale_index",
+      "value": "42",
+      "bestValue": false
+    },
+    {
+      "metric": "sqale_rating",
+      "value": "1.0",
+      "bestValue": true
+    },
+    {
+      "metric": "bugs",
+      "value": "4",
+      "bestValue": false
+    },
+    {
+      "metric": "software_quality_reliability_issues",
+      "value": "22",
+      "bestValue": false
+    },
+    {
+      "metric": "branch_coverage",
+      "value": "80.8",
+      "bestValue": false
+    },
+    {
+      "metric": "ncloc",
+      "value": "4120"
+    },
+    {
+      "metric": "software_quality_reliability_rating",
+      "value": "4.0",
+      "bestValue": false
+    },
+    {
+      "metric": "line_coverage",
+      "value": "54.0",
+      "bestValue": false
+    },
+    {
+      "metric": "coverage",
+      "value": "55.5",
+      "bestValue": false
+    },
+    {
+      "metric": "reliability_rating",
+      "value": "3.0",
+      "bestValue": false
+    },
+    {
+      "metric": "code_smells",
+      "value": "18",
+      "bestValue": false
+    },
+    {
+      "metric": "security_rating",
+      "value": "4.0",
+      "bestValue": false
+    },
+    {
+      "metric": "sqale_debt_ratio",
+      "value": "0.0",
+      "bestValue": true
+    },
+    {
+      "metric": "security_hotspots",
+      "value": "0",
+      "bestValue": true
+    },
+    {
+      "metric": "cognitive_complexity",
+      "value": "387",
+      "bestValue": false
+    },
+    {
+      "metric": "duplicated_blocks",
+      "value": "0",
+      "bestValue": true
+    },
+    {
+      "metric": "software_quality_maintainability_issues",
+      "value": "18",
+      "bestValue": false
+    },
+    {
+      "metric": "files",
+      "value": "57"
+    },
+    {
+      "metric": "vulnerabilities",
+      "value": "4",
+      "bestValue": false
+    },
+    {
+      "metric": "software_quality_maintainability_rating",
+      "value": "1.0",
+      "bestValue": true
+    }
+  ],
+  "files": [
+    {
+      "key": "recouvra-plus:scripts/seed.js",
+      "name": "seed.js",
+      "qualifier": "FIL",
+      "path": "scripts/seed.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "63",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "47"
+        },
+        {
+          "metric": "ncloc",
+          "value": "184"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/controllers/invoice.controller.js",
+      "name": "invoice.controller.js",
+      "qualifier": "FIL",
+      "path": "src/controllers/invoice.controller.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "42",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "44"
+        },
+        {
+          "metric": "coverage",
+          "value": "27.0",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "273"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/controllers/collection.controller.js",
+      "name": "collection.controller.js",
+      "qualifier": "FIL",
+      "path": "src/controllers/collection.controller.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "35",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "34"
+        },
+        {
+          "metric": "coverage",
+          "value": "11.6",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "260"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/controllers/client.controller.js",
+      "name": "client.controller.js",
+      "qualifier": "FIL",
+      "path": "src/controllers/client.controller.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "23",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "23"
+        },
+        {
+          "metric": "coverage",
+          "value": "12.0",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "197"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:scripts/smoke-test.js",
+      "name": "smoke-test.js",
+      "qualifier": "FIL",
+      "path": "scripts/smoke-test.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "20",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "32"
+        },
+        {
+          "metric": "ncloc",
+          "value": "86"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:frontend/src/api.js",
+      "name": "api.js",
+      "qualifier": "FIL",
+      "path": "frontend/src/api.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "18",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "31"
+        },
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "48"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/controllers/user.controller.js",
+      "name": "user.controller.js",
+      "qualifier": "FIL",
+      "path": "src/controllers/user.controller.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "18",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "18"
+        },
+        {
+          "metric": "coverage",
+          "value": "12.8",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "103"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/services/stats.service.js",
+      "name": "stats.service.js",
+      "qualifier": "FIL",
+      "path": "src/services/stats.service.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "15",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "56"
+        },
+        {
+          "metric": "coverage",
+          "value": "100.0",
+          "bestValue": true
+        },
+        {
+          "metric": "ncloc",
+          "value": "260"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/controllers/audit.controller.js",
+      "name": "audit.controller.js",
+      "qualifier": "FIL",
+      "path": "src/controllers/audit.controller.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "11",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "10"
+        },
+        {
+          "metric": "coverage",
+          "value": "14.3",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "40"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/middleware/auth.js",
+      "name": "auth.js",
+      "qualifier": "FIL",
+      "path": "src/middleware/auth.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "11",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "8"
+        },
+        {
+          "metric": "coverage",
+          "value": "75.0",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "35"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:frontend/src/components/TransitionControl.jsx",
+      "name": "TransitionControl.jsx",
+      "qualifier": "FIL",
+      "path": "frontend/src/components/TransitionControl.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "10",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "23"
+        },
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "56"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/controllers/auth.controller.js",
+      "name": "auth.controller.js",
+      "qualifier": "FIL",
+      "path": "src/controllers/auth.controller.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "9",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "12"
+        },
+        {
+          "metric": "coverage",
+          "value": "54.3",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "86"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/models/Invoice.js",
+      "name": "Invoice.js",
+      "qualifier": "FIL",
+      "path": "src/models/Invoice.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "9",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "13"
+        },
+        {
+          "metric": "coverage",
+          "value": "97.1",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "169"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:src/workflows/collectionAction.workflow.js",
+      "name": "collectionAction.workflow.js",
+      "qualifier": "FIL",
+      "path": "src/workflows/collectionAction.workflow.js",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "8",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "12"
+        },
+        {
+          "metric": "coverage",
+          "value": "51.2",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "25"
+        }
+      ]
+    },
+    {
+      "key": "recouvra-plus:frontend/src/pages/InvoiceDetail.jsx",
+      "name": "InvoiceDetail.jsx",
+      "qualifier": "FIL",
+      "path": "frontend/src/pages/InvoiceDetail.jsx",
+      "language": "js",
+      "measures": [
+        {
+          "metric": "cognitive_complexity",
+          "value": "8",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "41"
+        },
+        {
+          "metric": "coverage",
+          "value": "0.0",
+          "bestValue": false
+        },
+        {
+          "metric": "ncloc",
+          "value": "195"
+        }
+      ]
+    }
+  ],
+  "qualityGate": {
+    "status": "OK",
+    "conditions": [
+      {
+        "status": "OK",
+        "metricKey": "new_coverage",
+        "comparator": "LT",
+        "errorThreshold": "80",
+        "actualValue": "100.0"
+      },
+      {
+        "status": "OK",
+        "metricKey": "new_duplicated_lines_density",
+        "comparator": "GT",
+        "errorThreshold": "3",
+        "actualValue": "0.0"
+      },
+      {
+        "status": "OK",
+        "metricKey": "new_violations",
+        "comparator": "GT",
+        "errorThreshold": "0",
+        "actualValue": "0"
+      }
+    ],
+    "ignoredConditions": false,
+    "period": {
+      "mode": "PREVIOUS_VERSION",
+      "date": "2026-11-19T16:41:13+0000"
+    },
+    "caycStatus": "compliant"
+  }
+}

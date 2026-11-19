@@ -1,5 +1,7 @@
 # Recouvra+
 
+[![CI](https://github.com/Dhiachairet/ProjectNodejsrecouvra-plus/actions/workflows/ci.yml/badge.svg)](https://github.com/Dhiachairet/ProjectNodejsrecouvra-plus/actions/workflows/ci.yml)
+
 Invoice debt collection management: clients, invoices, payments, collection actions, dashboard and audit log.
 Project for the Software Quality and Test Automation module (ISO/IEC 25010).
 
@@ -39,6 +41,33 @@ npm run frontend:dev     # UI on  http://localhost:5173  (proxies /api to :3000)
 npm run frontend:build   # builds frontend/dist
 npm start                # API + UI on http://localhost:3000
 ```
+
+## Run with Docker
+
+Needs only Docker (Engine 25+, e.g. a recent Docker Desktop) and git: no Node.js or MongoDB on the machine.
+
+```bash
+cp .env.example .env                                # once, then set JWT_SECRET to a long random value
+docker compose up -d --build --wait                 # API + UI on http://localhost:3000, MongoDB inside Docker
+docker compose run --rm seed                        # optional: loads the demo data
+node scripts/smoke-test.js                          # optional: checks the running app (needs Node)
+docker compose down                                 # stop; add -v to also delete the database
+```
+
+- `.env` is only read to fill in `JWT_SECRET` (and optionally `APP_PORT`, `JWT_EXPIRE`); the containers never load it.
+- MongoDB runs in its own container without a published port, so it does not clash with a MongoDB already installed on the machine.
+- To use another port: `APP_PORT=8080 docker compose up -d --build --wait`, then `BASE_URL=http://localhost:8080 node scripts/smoke-test.js`.
+- The same commands are available as `npm run docker:up`, `docker:seed`, `docker:down` and `smoke`.
+
+## Continuous integration
+
+Every push and pull request runs [.github/workflows/ci.yml](.github/workflows/ci.yml) on GitHub Actions, with 3 jobs:
+
+| Job | What it proves |
+|---|---|
+| Lint and test (API) | `npm run lint` has no errors and every test passes (coverage report kept as an artifact) |
+| Frontend build | The React app builds from a clean install |
+| Docker smoke test | The Docker image builds, the stack starts, the seed runs and the smoke test passes on a clean Linux machine |
 
 ## Tests
 
@@ -88,6 +117,21 @@ npm run lint:report -- <name>     # saves the results as docs/evidence/6.7/<name
 
 Latest results: [docs/evidence/6.7/ESLINT_SUMMARY.md](docs/evidence/6.7/ESLINT_SUMMARY.md).
 
+## Code quality (SonarQube)
+
+SonarQube measures maintainability, duplication, complexity and coverage. It runs locally in Docker; the project settings are in [sonar-project.properties](sonar-project.properties).
+
+```bash
+docker run -d --name sonarqube -p 9000:9000 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true sonarqube:community
+# open http://localhost:9000, log in as admin/admin, change the password,
+# create a project with the key recouvra-plus and generate a token (My Account > Security)
+
+npm run test:coverage                                                    # coverage/lcov.info is imported by the scan
+npx @sonar/scan -Dsonar.host.url=http://localhost:9000 -Dsonar.token=<token>
+```
+
+Never commit the token. Latest results: [docs/evidence/6.7/SONAR_SUMMARY.md](docs/evidence/6.7/SONAR_SUMMARY.md).
+
 ## Demo accounts
 
 Password for all accounts: `Password123!`
@@ -105,7 +149,8 @@ src/
   app.js             Express app (routes, Swagger, static frontend), no DB connection: import it in tests
   server.js          connects to MongoDB and starts listening
   models/            User, Client, Invoice (+ payments), CollectionAction, AuditLog
-  controllers/       one per resource
+  controllers/       one per resource: validate the request, call the logic, send the response
+  services/          business logic too large for a controller (dashboard statistics)
   routes/            /api/auth, users, clients, invoices, collections, stats, audit
   workflows/         collection action status workflow (transition rules)
   middleware/        JWT protection, role authorization, error handler
