@@ -30,7 +30,7 @@ code { font-size: 12px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Layout */
-.shell { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+.shell { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; }
 
 .sidebar {
   background: var(--surface);
@@ -52,7 +52,7 @@ code { font-size: 12px; }
 .brand { font-size: 18px; font-weight: 700; padding: 0 10px; letter-spacing: -0.02em; }
 .brand span { color: var(--accent); }
 
-.content { padding: 28px 32px; max-width: 1240px; width: 100%; display: flex; flex-direction: column; gap: 16px; }
+.content { padding: 28px 32px; max-width: 1240px; width: 100%; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
 
 .page-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
@@ -70,6 +70,9 @@ code { font-size: 12px; }
   padding: 16px;
 }
 .card.flush { padding: 0; overflow-x: auto; }
+/* Tables in regular cards scroll inside the card instead of widening the page (DEF-02) */
+.card:has(> table) { overflow-x: auto; }
+.grid-2 > * { min-width: 0; }
 .card.flush > h2 { padding: 16px 16px 0; }
 .card.flush > p { padding: 0 16px; }
 
@@ -109,7 +112,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
 .form-grid .span-2 { grid-column: span 2; }
 
 .filters { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
-.filters label { min-width: 150px; }
+.filters label { min-width: 150px; flex: 1 1 150px; }
 
 .checks { border: 0; padding: 0; margin: 0 0 12px; display: flex; flex-direction: column; gap: 6px; }
 .checks label { flex-direction: row; align-items: center; gap: 8px; font-size: 14px; color: var(--text); }
@@ -151,6 +154,17 @@ button.small { padding: 3px 10px; font-size: 12px; }
 .meter { display: inline-block; width: 80px; height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; vertical-align: middle; }
 .meter span { display: block; height: 100%; background: var(--accent); }
 
+/* Table links get a comfortable tap target (DEF-04, Lighthouse target-size) */
+td a { display: inline-block; padding: 2px 0; min-height: 24px; }
+
+/* Text only read by screen readers (DEF-04, empty table headers).
+   Its cell is positioned so the hidden text stays inside the scrolling card instead of widening the page. */
+th:has(> .visually-hidden) { position: relative; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
 /* Text helpers */
 .muted { color: var(--muted); }
 .small { font-size: 12px; }
@@ -171,7 +185,7 @@ button.small { padding: 3px 10px; font-size: 12px; }
 
 /* Narrow screens: sidebar becomes a top bar */
 @media (max-width: 860px) {
-  .shell { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
   .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 12px 16px; gap: 12px; }
   .sidebar nav { flex-direction: row; flex-wrap: wrap; }
   .session { margin: 0 0 0 auto; flex-direction: row; align-items: center; }
@@ -179,4 +193,13 @@ button.small { padding: 3px 10px; font-size: 12px; }
   .grid-2, .form-grid, .form-grid.three { grid-template-columns: 1fr; }
   .span-2, .form-grid .span-2 { grid-column: auto; }
   .bars li { grid-template-columns: 100px 1fr auto; }
+}
+
+/* Phones (DEF-02): one KPI per row, full-width filters, navigation scrolls sideways */
+@media (max-width: 480px) {
+  .kpis { grid-template-columns: minmax(0, 1fr); }
+  .filters label { min-width: 0; flex-basis: 100%; }
+  .sidebar nav { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; }
+  .sidebar nav a { white-space: nowrap; }
+  .session { margin: 0; }
 }

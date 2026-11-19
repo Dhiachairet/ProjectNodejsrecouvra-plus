@@ -71,7 +71,7 @@ export default function Users() {
         <section className="card flush">
           <table>
             <thead>
-              <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Created</th>{isAdmin && <th />}</tr>
+              <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Created</th>{isAdmin && <th><span className="visually-hidden">Actions</span></th>}</tr>
             </thead>
             <tbody>
               {data.users.map(user => {

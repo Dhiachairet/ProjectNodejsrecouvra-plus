@@ -78,7 +78,7 @@ export default function Actions() {
             {data.actions.length ? (
               <table>
                 <thead>
-                  <tr><th>Date</th><th>Type</th><th>Client / invoice</th><th>Agent</th><th>Status</th><th>History</th><th>Workflow</th>{can('admin') && <th />}</tr>
+                  <tr><th>Date</th><th>Type</th><th>Client / invoice</th><th>Agent</th><th>Status</th><th>History</th><th>Workflow</th>{can('admin') && <th><span className="visually-hidden">Actions</span></th>}</tr>
                 </thead>
                 <tbody>
                   {data.actions.map(action => (
