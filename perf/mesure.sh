@@ -7,7 +7,7 @@
 #   perf/mesure.sh apres-cluster load cluster   # one process per core (npm start)
 #
 # Outputs in test/evidence/6.2/:
-#   k6-<script>-<label>.{txt,json,html}   k6 console, summary, web dashboard
+#   k6-<script>-<label>.{txt,html}        k6 console summary, web dashboard
 #   k6-stress-<label>-points.csv.gz, -par-palier.tsv   raw points and per-30 s table (stress only)
 #   cpu-mem-api-<script>-<label>.txt              top, every 5 s, every Node process of the API
 #   cpu-mem-mongo-<script>-<label>.txt            docker stats of the MongoDB container, every ~5 s
