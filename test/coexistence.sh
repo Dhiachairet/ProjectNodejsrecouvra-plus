@@ -6,6 +6,7 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 OUT=test/evidence/6.3/coexistence-$(date +%F).txt
+mkdir -p "$(dirname "$OUT")"
 LOGIN='{"email":"admin@recouvra.tn","password":"Password123!"}'
 PIDS=()
 cleanup() { for p in "${PIDS[@]}"; do kill "$p" 2>/dev/null; done; wait 2>/dev/null; }

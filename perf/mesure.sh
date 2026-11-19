@@ -18,6 +18,7 @@ cd "$(dirname "$0")/.."
 
 LABEL=$1; SCRIPT=$2; MODE=$3; shift 3
 OUT=test/evidence/6.2
+mkdir -p "$OUT"
 MONGO_CONTAINER=${MONGO_CONTAINER:-recouvra-mongo}
 case $SCRIPT in load) SAMPLES=26 ;; stress) SAMPLES=62 ;; *) echo "load or stress"; exit 1 ;; esac
 case $MODE in single) ENTRY=src/server.js ;; cluster) ENTRY=src/cluster.js ;; *) echo "single or cluster"; exit 1 ;; esac
