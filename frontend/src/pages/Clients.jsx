@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { fullName, money } from '../format.js';
 import ClientForm from '../components/ClientForm.jsx';
 import { Empty, ErrorMessage, Loading, PageHeader, Pagination } from '../components/ui.jsx';

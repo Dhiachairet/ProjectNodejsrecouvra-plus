@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { ACTION_STATUS, INVOICE_STATUS, money, month, fullName } from '../format.js';
 import { Bars, Empty, ErrorMessage, Kpi, Loading, PageHeader } from '../components/ui.jsx';
 

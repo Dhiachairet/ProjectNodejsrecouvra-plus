@@ -38,23 +38,25 @@ export async function api(path, { method = 'GET', body, query } = {}) {
 }
 
 // Loads `path` and reloads whenever the path or the query changes. Pass a null path to skip the call.
+// While a new request runs, the previous data stays available and `loading` is true.
 export function useApi(path, query) {
-  const [state, setState] = useState({ data: null, error: null, loading: Boolean(path) });
   const [version, setVersion] = useState(0);
-  const key = path && `${path}?${JSON.stringify(query ?? {})}`;
+  // The query object is a new reference on every render, so requests are keyed by its serialized value
+  const queryKey = JSON.stringify(query ?? {});
+  const requestKey = path ? `${path}?${queryKey}#${version}` : null;
+  const [result, setResult] = useState({ key: null, data: null, error: null });
 
   useEffect(() => {
-    if (!path) return;
+    if (!requestKey) return;
     let active = true;
-    setState(previous => ({ ...previous, loading: true }));
-    api(path, { query })
-      .then(data => active && setState({ data, error: null, loading: false }))
-      .catch(error => active && setState({ data: null, error: error.message, loading: false }));
+    api(path, { query: JSON.parse(queryKey) })
+      .then(data => active && setResult({ key: requestKey, data, error: null }))
+      .catch(error => active && setResult({ key: requestKey, data: null, error: error.message }));
     return () => { active = false; };
-    // `key` captures path + query by value
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [key, version]);
+  }, [path, queryKey, requestKey]);
 
   const reload = useCallback(() => setVersion(v => v + 1), []);
-  return { ...state, reload };
+  // Derived from the last finished request, so starting a request needs no extra state update (and render)
+  const loading = requestKey !== null && result.key !== requestKey;
+  return { data: result.data, error: result.error, loading, reload };
 }

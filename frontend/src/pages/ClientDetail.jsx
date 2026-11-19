@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { ACTION_TYPE, date, fullName, money } from '../format.js';
 import AgentAssignment from '../components/AgentAssignment.jsx';
 import ClientForm from '../components/ClientForm.jsx';

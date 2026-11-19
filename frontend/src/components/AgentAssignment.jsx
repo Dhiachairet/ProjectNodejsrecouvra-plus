@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { api, useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { fullName } from '../format.js';
 import { ErrorMessage } from './ui.jsx';
 

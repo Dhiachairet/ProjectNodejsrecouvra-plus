@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { api, useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { ROLE, date } from '../format.js';
 import { useForm } from '../components/useForm.js';
 import { ErrorMessage, Loading, PageHeader } from '../components/ui.jsx';

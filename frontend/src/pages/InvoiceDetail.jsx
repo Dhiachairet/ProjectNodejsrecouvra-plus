@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { ACTION_TYPE, PAYMENT_METHOD, date, dateTime, fullName, money, toDateInput } from '../format.js';
 import TransitionControl from '../components/TransitionControl.jsx';
 import { useForm } from '../components/useForm.js';

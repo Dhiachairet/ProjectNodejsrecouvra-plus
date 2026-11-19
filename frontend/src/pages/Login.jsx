@@ -1,4 +1,4 @@
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { useForm } from '../components/useForm.js';
 import { ErrorMessage } from '../components/ui.jsx';
 

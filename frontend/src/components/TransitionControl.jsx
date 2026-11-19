@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { api } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { TRANSITION_LABEL } from '../format.js';
 
 // Which extra input each target status asks for (mirrors the server-side workflow rules)

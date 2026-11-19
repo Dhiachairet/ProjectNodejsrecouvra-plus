@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, useApi } from '../api.js';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { ACTION_STATUS, ACTION_TYPE, dateTime, fullName } from '../format.js';
 import TransitionControl from '../components/TransitionControl.jsx';
 import { ActionStatus, Empty, ErrorMessage, Loading, PageHeader, Pagination } from '../components/ui.jsx';

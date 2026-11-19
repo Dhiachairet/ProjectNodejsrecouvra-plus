@@ -1,6 +1,7 @@
 import { sendJson } from '../utils/send.js';
 
-export function errorHandler(err, req, res, next) {
+// Express recognises an error handler by its 4 parameters, so `_next` must stay even though it is unused.
+export function errorHandler(err, req, res, _next) {
   let error = { ...err };
   error.message = err.message;
   

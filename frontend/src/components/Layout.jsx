@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../auth.jsx';
+import { useAuth } from '../useAuth.js';
 import { ROLE, fullName } from '../format.js';
 
 const LINKS = [
