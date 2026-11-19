@@ -1,0 +1,66 @@
+# The whole app (API + React build on one port) and its MongoDB, on any machine with Docker.
+# Needs Docker Engine 25 or newer: older engines reject the healthchecks' start_interval.
+#   docker compose up -d --build --wait     needs JWT_SECRET, e.g. in a .env next to this file
+#   docker compose run --rm seed            optional: resets the database and loads the demo data
+#   node scripts/smoke-test.js              checks the running app (set BASE_URL if APP_PORT is not 3000)
+#   docker compose down                     add -v to also delete the database volume
+# Compose reads that .env only to fill in the ${...} values below. The containers never load it:
+# its MONGODB_URI points at localhost, which inside a container is the container itself.
+
+services:
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    # No published port: the host often runs its own MongoDB on 27017, and the app reaches
+    # this one by its service name on the Compose network.
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+
+  app:
+    build: .
+    # Fixed name so the seed service below runs exactly this build
+    image: recouvra-plus-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      PORT: 3000
+      MONGODB_URI: mongodb://mongo:27017/recouvraplus
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is not set. Put a long random value in .env next to docker-compose.yml or export it before running docker compose}
+      JWT_EXPIRE: ${JWT_EXPIRE:-7d}
+      BCRYPT_ROUNDS: ${BCRYPT_ROUNDS:-10}
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      # The image has Node but no curl, so Node's own fetch does the request
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r => process.exit(r.ok ? 0 : 1), () => process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+      start_interval: 1s
+
+  seed:
+    build: .
+    image: recouvra-plus-app
+    profiles: ["seed"]
+    command: ["node", "scripts/seed.js"]
+    environment:
+      # The image defaults to production, where the seed script refuses to run on purpose
+      NODE_ENV: development
+      MONGODB_URI: mongodb://mongo:27017/recouvraplus
+      BCRYPT_ROUNDS: ${BCRYPT_ROUNDS:-10}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo-data:

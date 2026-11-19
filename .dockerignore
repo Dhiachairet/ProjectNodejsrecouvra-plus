@@ -1,0 +1,15 @@
+# Keeps the build context small and stops local files from leaking into the image.
+# Dependencies and the React build are always produced inside the image, never copied from the host.
+**/node_modules
+frontend/dist
+coverage
+.git
+.scannerwork
+docs/evidence
+logs
+*.log
+
+# Secrets: the containers get their settings from docker-compose.yml
+**/.env
+**/.env.*
+!**/.env.example

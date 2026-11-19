@@ -1,0 +1,64 @@
+Docker run from the repository folder, 2026-11-19T17:20Z
+Windows 11, Docker 28.5.2, Docker Compose version v2.40.3-desktop.1
+
+$ docker compose -p recouvra-verify build --no-cache app
+--progress is a global compose flag, better use `docker compose --progress xx build ...
+   -> exit 0 in 26s
+
+$ docker compose -p recouvra-verify up -d --wait   (APP_PORT=3300)
+ Network recouvra-verify_default  Creating
+ Network recouvra-verify_default  Created
+ Volume recouvra-verify_mongo-data  Creating
+ Volume recouvra-verify_mongo-data  Created
+ Container recouvra-verify-mongo-1  Creating
+ Container recouvra-verify-mongo-1  Created
+ Container recouvra-verify-app-1  Creating
+ Container recouvra-verify-app-1  Created
+ Container recouvra-verify-mongo-1  Starting
+ Container recouvra-verify-mongo-1  Started
+ Container recouvra-verify-mongo-1  Waiting
+ Container recouvra-verify-mongo-1  Healthy
+ Container recouvra-verify-app-1  Starting
+ Container recouvra-verify-app-1  Started
+ Container recouvra-verify-app-1  Waiting
+ Container recouvra-verify-mongo-1  Waiting
+ Container recouvra-verify-mongo-1  Healthy
+ Container recouvra-verify-app-1  Healthy
+   -> exit 0 in 5s
+
+$ docker compose -p recouvra-verify ps
+SERVICE   STATUS                   PORTS
+app       Up 2 seconds (healthy)   0.0.0.0:3300->3000/tcp, [::]:3300->3000/tcp
+mongo     Up 4 seconds (healthy)   27017/tcp
+
+$ docker compose -p recouvra-verify run --rm seed
+Seeding recouvraplus on mongo
+Created 5 users, 150 clients, 2000 invoices, 1428 collection actions.
+Demo accounts (password: Password123!)
+  admin    admin@recouvra.tn
+  manager  manager@recouvra.tn
+  agent    agent1@recouvra.tn
+  agent    agent2@recouvra.tn
+  agent    agent3@recouvra.tn
+   -> exit 0 in 3s
+
+$ BASE_URL=http://localhost:3300 node scripts/smoke-test.js
+Smoke test against http://localhost:3300
+PASS  GET /health answers ok (65 ms)
+PASS  GET / serves the React index.html (14 ms)
+PASS  GET /api-docs/ serves Swagger UI (6 ms)
+PASS  POST /api/auth/login returns a token (144 ms): as admin@recouvra.tn
+PASS  GET /api/stats returns the overview (43 ms): 150 clients, 1980 invoices
+All 5 checks passed
+   -> exit 0 in 0s
+
+$ docker compose -p recouvra-verify exec -T app id -un
+node
+
+$ docker image ls recouvra-plus-app
+recouvra-plus-app:latest  291MB
+
+$ docker compose -p recouvra-verify down -v
+ Volume recouvra-verify_mongo-data  Removed
+ Network recouvra-verify_default  Removed
+   -> exit 0 in 1s
