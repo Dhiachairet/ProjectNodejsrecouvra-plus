@@ -44,3 +44,9 @@ export async function protect(req, res, next) {
     next(error);
   }
 }
+
+// For public routes that behave differently for a logged-in caller: no header = anonymous, any header must be a valid token.
+export function optionalProtect(req, res, next) {
+  if (!req.headers.authorization) return next();
+  return protect(req, res, next);
+}

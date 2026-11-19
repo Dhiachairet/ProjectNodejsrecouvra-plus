@@ -3,8 +3,9 @@ import { Client } from '../models/Client.js';
 import { CollectionAction } from '../models/CollectionAction.js';
 import { validateInvoice, validatePayment, validateInvoiceUpdate } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
-import { canAccessClient, clientFilterFor } from '../utils/access.js';
+import { canAccessClient, canAccessClientId, clientFilterFor } from '../utils/access.js';
 import { audit } from '../utils/audit.js';
+import { buildSort, INVOICE_SORT_FIELDS } from '../utils/sort.js';
 
 const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -18,10 +19,9 @@ export async function getInvoices(req, res, next) {
       client, 
       search,
       fromDate, 
-      toDate,
-      sortBy = 'createdAt',
-      order = 'desc'
+      toDate
     } = req.query;
+    const sort = buildSort(req.query, INVOICE_SORT_FIELDS, 'createdAt', 'desc');
     
     
     let filter = {};
@@ -46,10 +46,6 @@ export async function getInvoices(req, res, next) {
    
     const skip = (parseInt(page) - 1) * parseInt(limit);
     
-    const sortOrder = order === 'asc' ? 1 : -1;
-    const sort = { [sortBy]: sortOrder };
-    
-   
     const invoices = await Invoice.find(filter)
       .populate('client', 'name email company phone')
       .populate('createdBy', 'firstName lastName')
@@ -195,6 +191,10 @@ export async function updateInvoice(req, res, next) {
     if (!invoice) {
       return sendError(res, 404, 'Invoice not found');
     }
+
+    if (!await canAccessClientId(req.user, invoice.client)) {
+      return sendError(res, 403, 'You can only modify invoices of your own clients');
+    }
     
     
     if (invoice.status === 'paid') {
@@ -287,6 +287,10 @@ export async function addPayment(req, res, next) {
     if (!invoice) {
       return sendError(res, 404, 'Invoice not found');
     }
+
+    if (!await canAccessClientId(req.user, invoice.client)) {
+      return sendError(res, 403, 'You can only add payments to invoices of your own clients');
+    }
   
     
     if (invoice.status === 'paid') {
@@ -347,6 +351,10 @@ export async function getInvoicePayments(req, res, next) {
     
     if (!invoice) {
       return sendError(res, 404, 'Invoice not found');
+    }
+
+    if (!await canAccessClientId(req.user, invoice.client)) {
+      return sendError(res, 403, 'You can only view payments of your own clients\' invoices');
     }
     
     sendJson(res, 200, {

@@ -72,6 +72,10 @@ Tests run against an in-memory MongoDB, so they need no `.env` and never touch y
 
 The test environment variables (JWT secret, fast password hashing) are set in `tests/helpers/env.js`.
 
+## Security
+
+CORS origins (`CORS_ORIGIN`), proxy (`TRUST_PROXY`), login rate limiting and the JWT storage risk are documented in [docs/SECURITY.md](docs/SECURITY.md). Passwords need at least 10 characters with an uppercase letter, a digit and a special character.
+
 ## Demo accounts
 
 Password for all accounts: `Password123!`

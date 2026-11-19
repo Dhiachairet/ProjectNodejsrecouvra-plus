@@ -26,6 +26,13 @@ export function canAccessClient(user, client) {
     (client.assignedAgents ?? []).some(agent => idOf(agent) === userId);
 }
 
+// Same rule from a client id (or a populated client). An agent gets false for a client that does not exist.
+export async function canAccessClientId(user, clientRef) {
+  if (user.role !== 'agent') return true;
+  const client = await Client.findById(idOf(clientRef));
+  return Boolean(client) && canAccessClient(user, client);
+}
+
 export function clientIdsForAgent(agentId) {
   return Client.find({ $or: [{ createdBy: agentId }, { assignedAgents: agentId }] }).distinct('_id');
 }

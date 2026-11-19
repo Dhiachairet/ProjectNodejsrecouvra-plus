@@ -3,8 +3,9 @@ import { Invoice } from '../models/Invoice.js';
 import { Client } from '../models/Client.js';
 import { validateCollectionAction, validateCollectionActionUpdate, validateStatusTransition } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
-import { canAccessClient, clientFilterFor } from '../utils/access.js';
+import { canAccessClient, canAccessClientId, clientFilterFor } from '../utils/access.js';
 import { audit } from '../utils/audit.js';
+import { buildSort, ACTION_SORT_FIELDS } from '../utils/sort.js';
 import { checkTransition } from '../workflows/collectionAction.workflow.js';
 
 const ACTION_POPULATE = [
@@ -23,10 +24,9 @@ export async function getCollectionActions(req, res, next) {
       actionType,
       client,
       fromDate,
-      toDate,
-      sortBy = 'actionDate',
-      order = 'desc'
+      toDate
     } = req.query;
+    const sort = buildSort(req.query, ACTION_SORT_FIELDS, 'actionDate', 'desc');
     
     
     let filter = {};
@@ -47,10 +47,6 @@ export async function getCollectionActions(req, res, next) {
 
     
     const skip = (parseInt(page) - 1) * parseInt(limit);
-    
-    
-    const sortOrder = order === 'asc' ? 1 : -1;
-    const sort = { [sortBy]: sortOrder };
     
     
     const actions = await CollectionAction.find(filter)
@@ -97,6 +93,10 @@ export async function getCollectionAction(req, res, next) {
     
     if (!action) {
       return sendError(res, 404, 'Collection action not found');
+    }
+
+    if (!await canAccessClientId(req.user, action.client)) {
+      return sendError(res, 403, 'You can only view actions of your own clients');
     }
     
     sendJson(res, 200, {
@@ -302,6 +302,16 @@ export async function deleteCollectionAction(req, res, next) {
 
 export async function getInvoiceActions(req, res, next) {
   try {
+    if (req.user.role === 'agent') {
+      const invoice = await Invoice.findById(req.params.invoiceId).select('client');
+      if (!invoice) {
+        return sendError(res, 404, 'Invoice not found');
+      }
+      if (!await canAccessClientId(req.user, invoice.client)) {
+        return sendError(res, 403, 'You can only view actions of your own clients');
+      }
+    }
+
     const actions = await CollectionAction.find({ invoice: req.params.invoiceId })
       .populate('performedBy', 'firstName lastName')
       .sort({ actionDate: -1 });
@@ -319,6 +329,10 @@ export async function getInvoiceActions(req, res, next) {
 
 export async function getClientActions(req, res, next) {
   try {
+    if (!await canAccessClientId(req.user, req.params.clientId)) {
+      return sendError(res, 403, 'You can only view actions of your own clients');
+    }
+
     const actions = await CollectionAction.find({ client: req.params.clientId })
       .populate('invoice', 'invoiceNumber amount')
       .populate('performedBy', 'firstName lastName')

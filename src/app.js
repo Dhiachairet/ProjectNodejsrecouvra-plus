@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -22,12 +23,30 @@ const frontendDist = path.join(rootDir, 'frontend', 'dist');
 // The Express app without a DB connection or a listening port, so tests can import it directly.
 const app = express();
 
+// Behind a reverse proxy, set TRUST_PROXY (e.g. 1 = one proxy hop) so rate limiting sees the real client IP.
+if (process.env.TRUST_PROXY) {
+  const hops = Number(process.env.TRUST_PROXY);
+  app.set('trust proxy', Number.isInteger(hops) ? hops : process.env.TRUST_PROXY);
+}
+
+app.use(helmet());
+
+// CORS_ORIGIN: comma-separated list of allowed origins. Never '*': it is dropped from the list.
+const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(origin => origin && origin !== '*');
+
+app.use(cors({
+  // Requests without an Origin header (same-origin, curl, k6) are not cross-origin browser requests
+  origin: (origin, callback) => callback(null, !origin || allowedOrigins.includes(origin)),
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  maxAge: 600
+}));
 
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true }));
-
-
-app.use(cors());
 
 
 app.get('/health', (req, res) => {

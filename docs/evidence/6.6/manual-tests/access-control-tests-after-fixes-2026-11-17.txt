@@ -1,0 +1,29 @@
+﻿
+> recouvra-plus@1.0.0 test:security
+> node --experimental-vm-modules node_modules/jest/bin/jest.js tests/security --json --outputFile=docs\evidence\6.6\access-control-tests-after-fixes-2026-11-17.json
+
+npm : (node:5292) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+Au caractère Ligne:2 : 25
++ ... dence\6.6'; npm run test:security -- --json --outputFile="$d\access-c ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:5292) Exp...nge at any time:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23420) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10144) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17520) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS tests/security/register.test.js (5.605 s)
+PASS tests/security/auth-token.test.js (5.599 s)
+PASS tests/security/portfolio-isolation.test.js (8.025 s)
+PASS tests/security/role-matrix.test.js (12.562 s)
+
+Test Suites: 4 passed, 4 total
+Tests:       133 passed, 133 total
+Snapshots:   0 total
+Time:        12.981 s, estimated 13 s
+Ran all test suites matching /tests\\security/i.
+Test results written to: docs\evidence\6.6\access-control-tests-after-fixes-2026-11-17.json

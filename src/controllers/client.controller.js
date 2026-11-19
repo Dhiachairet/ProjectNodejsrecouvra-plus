@@ -6,13 +6,15 @@ import { validateClient, validateClientUpdate, validateAssignAgents } from '../u
 import { sendJson, sendError } from '../utils/send.js';
 import { clientScope, canAccessClient } from '../utils/access.js';
 import { audit } from '../utils/audit.js';
+import { buildSort, CLIENT_SORT_FIELDS } from '../utils/sort.js';
 
 const AGENT_FIELDS = 'firstName lastName email';
 
 
 export async function getClients(req, res, next) {
   try {
-    const { page = 1, limit = 10, search, agent, sortBy = 'name', order = 'asc' } = req.query;
+    const { page = 1, limit = 10, search, agent } = req.query;
+    const sort = buildSort(req.query, CLIENT_SORT_FIELDS, 'name', 'asc');
     
     
     let query = clientScope(req.user);
@@ -29,10 +31,6 @@ export async function getClients(req, res, next) {
     
     
     const skip = (parseInt(page) - 1) * parseInt(limit);
-    
-    
-    const sortOrder = order === 'asc' ? 1 : -1;
-    const sort = { [sortBy]: sortOrder };
     
     
     const clients = await Client.find(query)
@@ -67,6 +65,10 @@ export async function getClient(req, res, next) {
     
     if (!client) {
       return sendError(res, 404, 'Client not found');
+    }
+
+    if (!canAccessClient(req.user, client)) {
+      return sendError(res, 403, 'You can only view your own clients');
     }
     
     
@@ -208,6 +210,10 @@ export async function getClientInvoices(req, res, next) {
     
     if (!client) {
       return sendError(res, 404, 'Client not found');
+    }
+
+    if (!canAccessClient(req.user, client)) {
+      return sendError(res, 403, 'You can only view invoices of your own clients');
     }
     
     const invoices = await Invoice.find({ client: client._id })

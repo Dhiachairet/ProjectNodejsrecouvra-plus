@@ -19,7 +19,11 @@ export async function register(req, res, next) {
       return sendError(res, 400, error.details[0].message);
     }
     
-    const { email, password, firstName, lastName, role } = req.body;
+    const { email, password, firstName, lastName } = req.body;
+
+    // Public sign-up always creates an agent. The role is only read from the body for an authenticated admin
+    // (the admin "New user" form); for anybody else it is ignored, never trusted.
+    const role = req.user?.role === 'admin' ? (req.body.role ?? 'agent') : 'agent';
     
     
     const userExists = await User.findOne({ email });
@@ -32,7 +36,7 @@ export async function register(req, res, next) {
       password,
       firstName,
       lastName,
-      role: role || 'agent'
+      role
     });
 
     await audit(req, 'auth.register', {

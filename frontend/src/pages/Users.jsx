@@ -20,7 +20,7 @@ function UserForm({ onSaved, onCancel }) {
         <label>First name<input {...bind('firstName')} required /></label>
         <label>Last name<input {...bind('lastName')} required /></label>
         <label>Email<input {...bind('email')} type="email" required /></label>
-        <label>Password<input {...bind('password')} type="password" minLength={6} required autoComplete="new-password" /></label>
+        <label>Password<input {...bind('password')} type="password" minLength={10} title="At least 10 characters with an uppercase letter, a digit and a special character" required autoComplete="new-password" /></label>
         <label>Role
           <select {...bind('role')}>
             {Object.entries(ROLE).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
