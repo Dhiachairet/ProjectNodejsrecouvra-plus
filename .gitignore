@@ -11,3 +11,14 @@ coverage/
 # Rapport HTML « avant » (51 Mo de traces) : gardé en local, la sortie console avant est commitée
 test/evidence/6.1/playwright-report-avant/
 test/evidence/6.1/playwright-report-apres/
+
+# Preuves brutes volumineuses : gardées en local, les résumés (.txt, .tsv, .html, resume.json) sont versionnés
+test/evidence/**/*-points.csv.gz
+test/evidence/**/*.report.json
+test/evidence/6.3/newman-contrat-api*.json
+test/.rapport-final.html
+
+# Documents locaux (sujet du prof, rapports des autres étudiants) : jamais poussés
+docs/*.pdf
+docs/Tp_prof/
+/*.pdf
