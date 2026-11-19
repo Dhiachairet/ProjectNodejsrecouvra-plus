@@ -13,7 +13,13 @@
     "frontend:build": "npm --prefix frontend run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
-    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:e2e": "playwright test",
+    "test:e2e:chromium": "playwright test --project=chromium",
+    "test:api": "node api-tests/build-collection.mjs && newman run api-tests/recouvra-contract.postman_collection.json -e api-tests/local.postman_environment.json -r cli,htmlextra --reporter-htmlextra-export test/evidence/6.3/newman-contrat-api.html",
+    "test:a11y:lighthouse": "node test/lighthouse-pages.mjs",
+    "perf:load": "docker run --rm -i --network host -v \"$PWD/perf:/perf:ro\" grafana/k6 run /perf/load.js",
+    "perf:stress": "docker run --rm -i --network host -v \"$PWD/perf:/perf:ro\" grafana/k6 run /perf/stress.js"
   },
   "keywords": [],
   "author": "",
@@ -30,10 +36,15 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@jest/globals": "^29.7.0",
+    "@playwright/test": "^1.65.1",
     "jest": "^29.7.0",
     "mongodb-memory-server": "^11.3.0",
+    "newman": "^6.2.3",
+    "newman-reporter-htmlextra": "^1.23.1",
     "nodemon": "^3.1.14",
+    "openapi-to-postmanv2": "^6.4.3",
     "supertest": "^6.3.4"
   },
   "directories": {
