@@ -31,5 +31,6 @@ test('CT-P-09 la connexion échouée est tracée', async ({ page }) => {
   await login(page, USERS.admin);
   await page.goto('/audit');
   await page.getByLabel('Area').selectOption('auth.login_failed');
-  await expect(page.locator('tbody tr').first()).toContainText(USERS.agent2);
+  // Other tests running in parallel also log failed logins: look for agent2's row, not just the first one
+  await expect(page.locator('tbody tr', { hasText: USERS.agent2 }).first()).toContainText('Failed login');
 });
