@@ -1,0 +1,51 @@
+Refactoring equivalence check, 2026-11-19T16:47Z, Node v24.11.1
+Old code: commit 19ed241 (src/controllers/stats.controller.js before the refactor), port 3101.
+New code: working tree with src/services/stats.service.js, port 3102. Same MongoDB database (seeded demo data).
+Each request is sent to both versions at the same moment with the same token (admin, manager, agent).
+
+SAME* admin   200  /api/stats  (5042 bytes)
+SAME* admin   200  /api/stats?from=2026-01-01&to=2026-06-30  (3697 bytes)
+SAME* admin   200  /api/stats?from=2026-09-01  (4372 bytes)
+SAME* admin   200  /api/stats?to=2026-03-31  (3596 bytes)
+SAME* admin   200  /api/stats?from=2026-11-19&to=2026-11-19  (3408 bytes)
+SAME* admin   200  /api/stats?agent=<id>  (5026 bytes)
+SAME  admin   200  /api/stats?agent=<id>&from=2026-03-01&to=2026-10-31  (4789 bytes)
+SAME* admin   200  /api/stats?client=<id>  (3312 bytes)
+SAME* admin   200  /api/stats?client=<id>  (3334 bytes)
+SAME* admin   200  /api/stats?agent=<id>&client=<id>  (3334 bytes)
+SAME* admin   200  /api/stats?agent=<id>&client=<id>  (547 bytes)
+SAME  admin   400  /api/stats?agent=not-an-id  (46 bytes)
+SAME  admin   400  /api/stats?from=2026-10-01&to=2026-09-01  (61 bytes)
+SAME  admin   200  /api/stats/summary  (119 bytes)
+SAME* manager 200  /api/stats  (5042 bytes)
+SAME* manager 200  /api/stats?from=2026-01-01&to=2026-06-30  (3697 bytes)
+SAME* manager 200  /api/stats?from=2026-09-01  (4372 bytes)
+SAME* manager 200  /api/stats?to=2026-03-31  (3596 bytes)
+SAME  manager 200  /api/stats?from=2026-11-19&to=2026-11-19  (3408 bytes)
+SAME* manager 200  /api/stats?agent=<id>  (5026 bytes)
+SAME  manager 200  /api/stats?agent=<id>&from=2026-03-01&to=2026-10-31  (4789 bytes)
+SAME* manager 200  /api/stats?client=<id>  (3312 bytes)
+SAME* manager 200  /api/stats?client=<id>  (3334 bytes)
+SAME* manager 200  /api/stats?agent=<id>&client=<id>  (3334 bytes)
+SAME  manager 200  /api/stats?agent=<id>&client=<id>  (547 bytes)
+SAME  manager 400  /api/stats?agent=not-an-id  (46 bytes)
+SAME  manager 400  /api/stats?from=2026-10-01&to=2026-09-01  (61 bytes)
+SAME  manager 200  /api/stats/summary  (119 bytes)
+SAME* agent1  200  /api/stats  (5026 bytes)
+SAME* agent1  200  /api/stats?from=2026-01-01&to=2026-06-30  (3698 bytes)
+SAME* agent1  200  /api/stats?from=2026-09-01  (4373 bytes)
+SAME  agent1  200  /api/stats?to=2026-03-31  (3586 bytes)
+SAME* agent1  200  /api/stats?from=2026-11-19&to=2026-11-19  (2868 bytes)
+SAME* agent1  200  /api/stats?agent=<id>  (5026 bytes)
+SAME* agent1  200  /api/stats?agent=<id>&from=2026-03-01&to=2026-10-31  (4747 bytes)
+SAME* agent1  200  /api/stats?client=<id>  (3334 bytes)
+SAME  agent1  200  /api/stats?client=<id>  (547 bytes)
+SAME* agent1  200  /api/stats?agent=<id>&client=<id>  (3334 bytes)
+SAME* agent1  200  /api/stats?agent=<id>&client=<id>  (547 bytes)
+SAME  agent1  400  /api/stats?agent=not-an-id  (46 bytes)
+SAME  agent1  400  /api/stats?from=2026-10-01&to=2026-09-01  (61 bytes)
+SAME  agent1  200  /api/stats/summary  (119 bytes)
+
+42 equal responses, 0 different.
+SAME = byte-identical. SAME* = same keys and values; only the order of object keys differs, which MongoDB does not
+guarantee for $group results (the old code alone returns collectionStats/userStats keys in varying order).

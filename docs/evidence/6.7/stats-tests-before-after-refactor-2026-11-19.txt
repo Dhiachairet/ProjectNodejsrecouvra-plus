@@ -1,0 +1,95 @@
+Characterization tests for the dashboard statistics (tests/integration/stats.test.js), 2026-11-19T17:23Z, Node v24.11.1
+
+== BEFORE the refactor: original src/controllers/stats.controller.js (commit 19ed241)
+PASS tests/integration/stats.test.js
+  GET /api/stats
+    without filters
+      √ returns the whole dashboard for a manager (221 ms)
+      √ lists the top clients and the collectors by name, in order (146 ms)
+      √ gives an admin exactly the same dashboard as a manager (133 ms)
+    date range
+      √ filters invoices by issue date, payments by payment date and actions by action date (99 ms)
+      √ drops the 12-month window of monthlyStats when only an end date is given (100 ms)
+      √ includes both ends: from its UTC midnight, to until 23:59:59.999 server local time (153 ms)
+    agent and client filters
+      √ limits every figure to the agent portfolio when a manager filters by agent (103 ms)
+      √ always restricts an agent to their own portfolio, even when passing another agent id (102 ms)
+      √ gives agent B their own figures when they ask for agent A (78 ms)
+      √ lets an admin see any agent portfolio exactly as that agent sees it (99 ms)
+      √ limits every figure to one client with the client filter (74 ms)
+      √ combines agent and client when the client is in the agent portfolio (92 ms)
+      √ returns empty statistics when the client is outside the agent portfolio (71 ms)
+      √ lets an agent filter by client only inside their own portfolio (77 ms)
+    recent activities
+      √ merges only the 5 latest payments with the 5 latest actions, newest first (96 ms)
+  GET /api/stats/summary
+    √ returns the global summary (69 ms)
+    √ is not restricted to the agent portfolio (79 ms)
+    √ ignores the dashboard filters (69 ms)
+    √ counts only the payments received since local midnight today (80 ms)
+  Stats on an empty database
+    √ returns zeros and empty lists on the dashboard (20 ms)
+    √ returns zeros in the summary (21 ms)
+  Stats validation and authentication
+    √ rejects a malformed agent id with 400 (18 ms)
+    √ rejects a client id that is not hexadecimal with 400 (17 ms)
+    √ rejects an end date before the start date with 400 (17 ms)
+    √ rejects a date that cannot be parsed with 400 (35 ms)
+    √ rejects an unknown filter with 400 (17 ms)
+    √ validates the agent id even for an agent, whose own id replaces it anyway (16 ms)
+    √ rejects /api/stats without a token with 401 (3 ms)
+    √ rejects /api/stats/summary without a token with 401 (3 ms)
+    √ rejects /api/stats with an invalid token with 401 (4 ms)
+    √ rejects /api/stats/summary with an invalid token with 401 (3 ms)
+Test Suites: 1 passed, 1 total
+Tests:       31 passed, 31 total
+Snapshots:   0 total
+Time:        3.819 s, estimated 5 s
+Ran all test suites matching /tests\\integration\\stats.test.js/i.
+
+== AFTER the refactor: src/services/stats.service.js + slimmed controller (working tree)
+PASS tests/integration/stats.test.js
+  GET /api/stats
+    without filters
+      √ returns the whole dashboard for a manager (195 ms)
+      √ lists the top clients and the collectors by name, in order (90 ms)
+      √ gives an admin exactly the same dashboard as a manager (117 ms)
+    date range
+      √ filters invoices by issue date, payments by payment date and actions by action date (94 ms)
+      √ drops the 12-month window of monthlyStats when only an end date is given (79 ms)
+      √ includes both ends: from its UTC midnight, to until 23:59:59.999 server local time (105 ms)
+    agent and client filters
+      √ limits every figure to the agent portfolio when a manager filters by agent (93 ms)
+      √ always restricts an agent to their own portfolio, even when passing another agent id (97 ms)
+      √ gives agent B their own figures when they ask for agent A (70 ms)
+      √ lets an admin see any agent portfolio exactly as that agent sees it (95 ms)
+      √ limits every figure to one client with the client filter (72 ms)
+      √ combines agent and client when the client is in the agent portfolio (71 ms)
+      √ returns empty statistics when the client is outside the agent portfolio (82 ms)
+      √ lets an agent filter by client only inside their own portfolio (72 ms)
+    recent activities
+      √ merges only the 5 latest payments with the 5 latest actions, newest first (102 ms)
+  GET /api/stats/summary
+    √ returns the global summary (71 ms)
+    √ is not restricted to the agent portfolio (67 ms)
+    √ ignores the dashboard filters (71 ms)
+    √ counts only the payments received since local midnight today (86 ms)
+  Stats on an empty database
+    √ returns zeros and empty lists on the dashboard (30 ms)
+    √ returns zeros in the summary (20 ms)
+  Stats validation and authentication
+    √ rejects a malformed agent id with 400 (19 ms)
+    √ rejects a client id that is not hexadecimal with 400 (20 ms)
+    √ rejects an end date before the start date with 400 (19 ms)
+    √ rejects a date that cannot be parsed with 400 (19 ms)
+    √ rejects an unknown filter with 400 (20 ms)
+    √ validates the agent id even for an agent, whose own id replaces it anyway (17 ms)
+    √ rejects /api/stats without a token with 401 (4 ms)
+    √ rejects /api/stats/summary without a token with 401 (4 ms)
+    √ rejects /api/stats with an invalid token with 401 (4 ms)
+    √ rejects /api/stats/summary with an invalid token with 401 (4 ms)
+Test Suites: 1 passed, 1 total
+Tests:       31 passed, 31 total
+Snapshots:   0 total
+Time:        3.859 s, estimated 5 s
+Ran all test suites matching /tests\\integration\\stats.test.js/i.
