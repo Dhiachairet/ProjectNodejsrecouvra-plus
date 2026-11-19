@@ -10,3 +10,4 @@ coverage/
 /blob-report/
 # Rapport HTML « avant » (51 Mo de traces) : gardé en local, la sortie console avant est commitée
 test/evidence/6.1/playwright-report-avant/
+test/evidence/6.1/playwright-report-apres/

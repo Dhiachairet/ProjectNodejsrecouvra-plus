@@ -2,7 +2,7 @@
 // Playwright ouvre Chromium avec un port de débogage et se connecte en admin (jeton en localStorage),
 // puis Lighthouse audite chaque page dans ce même navigateur sans effacer le stockage.
 // Prérequis : app lancée (npm start), Lighthouse installé globalement (npm i -g lighthouse).
-// Usage : node test/lighthouse-pages.mjs
+// Usage : node test/lighthouse-pages.mjs   (ou LH_OUT=test/evidence/6.4/lighthouse-apres node test/lighthouse-pages.mjs)
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -10,7 +10,7 @@ import { execSync } from 'child_process';
 import { chromium } from '@playwright/test';
 
 const { default: lighthouse } = await import(path.join(execSync('npm root -g').toString().trim(), 'lighthouse/core/index.js'));
-const OUT = 'test/evidence/6.4/lighthouse';
+const OUT = process.env.LH_OUT || 'test/evidence/6.4/lighthouse'; // LH_OUT=… pour garder avant/après côte à côte
 const PORT = 9555;
 const PAGES = { login: '/', dashboard: '/', clients: '/clients', invoices: '/invoices', actions: '/actions', users: '/users', audit: '/audit' };
 
