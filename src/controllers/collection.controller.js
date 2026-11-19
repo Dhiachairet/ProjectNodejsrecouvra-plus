@@ -3,6 +3,7 @@ import { Invoice } from '../models/Invoice.js';
 import { Client } from '../models/Client.js';
 import { validateCollectionAction, validateCollectionActionUpdate, validateStatusTransition } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { pagination } from '../utils/pagination.js';
 import { canAccessClient, clientFilterFor } from '../utils/access.js';
 import { audit } from '../utils/audit.js';
 import { checkTransition } from '../workflows/collectionAction.workflow.js';
@@ -17,8 +18,6 @@ const ACTION_POPULATE = [
 export async function getCollectionActions(req, res, next) {
   try {
     const { 
-      page = 1, 
-      limit = 10, 
       status, 
       actionType,
       client,
@@ -46,7 +45,7 @@ export async function getCollectionActions(req, res, next) {
     
 
     
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page, limit, skip } = pagination(req.query);
     
     
     const sortOrder = order === 'asc' ? 1 : -1;
@@ -59,7 +58,7 @@ export async function getCollectionActions(req, res, next) {
       .populate('performedBy', 'firstName lastName')
       .sort(sort)
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(limit);
     
     
     const total = await CollectionAction.countDocuments(filter);
@@ -77,8 +76,8 @@ export async function getCollectionActions(req, res, next) {
       success: true,
       count: actions.length,
       total,
-      page: parseInt(page),
-      pages: Math.ceil(total / parseInt(limit)),
+      page,
+      pages: Math.ceil(total / limit),
       summary,
       actions
     });

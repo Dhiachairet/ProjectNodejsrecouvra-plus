@@ -3,6 +3,7 @@ import { Client } from '../models/Client.js';
 import { CollectionAction } from '../models/CollectionAction.js';
 import { validateInvoice, validatePayment, validateInvoiceUpdate } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { pagination } from '../utils/pagination.js';
 import { canAccessClient, clientFilterFor } from '../utils/access.js';
 import { audit } from '../utils/audit.js';
 
@@ -12,8 +13,6 @@ const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 export async function getInvoices(req, res, next) {
   try {
     const { 
-      page = 1, 
-      limit = 10, 
       status, 
       client, 
       search,
@@ -44,7 +43,7 @@ export async function getInvoices(req, res, next) {
     
 
    
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page, limit, skip } = pagination(req.query);
     
     const sortOrder = order === 'asc' ? 1 : -1;
     const sort = { [sortBy]: sortOrder };
@@ -56,7 +55,7 @@ export async function getInvoices(req, res, next) {
       .populate('payments.receivedBy', 'firstName lastName')
       .sort(sort)
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(limit);
     
     
     const total = await Invoice.countDocuments(filter);
@@ -77,8 +76,8 @@ export async function getInvoices(req, res, next) {
       success: true,
       count: invoices.length,
       total,
-      page: parseInt(page),
-      pages: Math.ceil(total / parseInt(limit)),
+      page,
+      pages: Math.ceil(total / limit),
       summary: summary[0] || { totalAmount: 0, totalPaid: 0, totalUnpaid: 0, count: 0 },
       invoices
     });

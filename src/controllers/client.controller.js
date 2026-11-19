@@ -4,6 +4,7 @@ import { CollectionAction } from '../models/CollectionAction.js';
 import { User } from '../models/User.js';
 import { validateClient, validateClientUpdate, validateAssignAgents } from '../utils/validation.js';
 import { sendJson, sendError } from '../utils/send.js';
+import { pagination } from '../utils/pagination.js';
 import { clientScope, canAccessClient } from '../utils/access.js';
 import { audit } from '../utils/audit.js';
 
@@ -12,7 +13,7 @@ const AGENT_FIELDS = 'firstName lastName email';
 
 export async function getClients(req, res, next) {
   try {
-    const { page = 1, limit = 10, search, agent, sortBy = 'name', order = 'asc' } = req.query;
+    const { search, agent, sortBy = 'name', order = 'asc' } = req.query;
     
     
     let query = clientScope(req.user);
@@ -28,7 +29,7 @@ export async function getClients(req, res, next) {
     }
     
     
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page, limit, skip } = pagination(req.query);
     
     
     const sortOrder = order === 'asc' ? 1 : -1;
@@ -40,7 +41,7 @@ export async function getClients(req, res, next) {
       .populate('assignedAgents', AGENT_FIELDS)
       .sort(sort)
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(limit);
     
    
     const total = await Client.countDocuments(query);
@@ -49,8 +50,8 @@ export async function getClients(req, res, next) {
       success: true,
       count: clients.length,
       total,
-      page: parseInt(page),
-      pages: Math.ceil(total / parseInt(limit)),
+      page,
+      pages: Math.ceil(total / limit),
       clients
     });
   } catch (error) {
