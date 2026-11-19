@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push to the same branch or pull request cancels the run it replaces
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-test:
+    name: Lint and test (API)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      # mongodb-memory-server downloads MongoDB during npm ci (postinstall). By default it saves it in
+      # node_modules/.cache, which npm ci deletes on every run; this sends it to ~/.cache/mongodb-binaries.
+      MONGOMS_PREFER_GLOBAL_PATH: 'true'
+      # Runners use UTC; a real time zone makes the date-range tests exercise local-time logic too
+      TZ: Africa/Tunis
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      # Restored before npm ci, so the postinstall finds the binary and skips the download
+      - name: Cache MongoDB binary for tests
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: mongodb-binaries-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test with coverage
+        id: tests
+        run: npm run test:coverage
+
+      # Also uploaded when tests fail, so the report of a red run can be inspected
+      - name: Upload coverage report
+        if: always() && steps.tests.outcome != 'skipped'
+        uses: actions/upload-artifact@v6
+        with:
+          name: coverage
+          path: coverage/
+          retention-days: 14
+
+  frontend-build:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+  docker-smoke:
+    name: Docker smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      # The smoke test is plain Node with no dependencies, so no npm install is needed
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      # A fresh secret for each run: the stack only lives for this job, so nothing is stored or hard-coded.
+      # docker compose reads it from the environment for ${JWT_SECRET:?...} in docker-compose.yml.
+      - name: Generate JWT secret
+        run: |
+          secret="$(openssl rand -hex 32)"
+          echo "::add-mask::$secret"
+          echo "JWT_SECRET=$secret" >> "$GITHUB_ENV"
+
+      - name: Build and start the stack
+        run: docker compose up -d --build --wait --wait-timeout 180
+
+      - name: Seed demo data
+        run: docker compose run --rm seed
+
+      - name: Smoke test
+        run: node scripts/smoke-test.js
+
+      - name: Show container logs
+        if: always()
+        run: docker compose logs --no-color --timestamps
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v
