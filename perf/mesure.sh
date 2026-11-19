@@ -38,7 +38,7 @@ DSTATS=$!
 
 docker run --rm --network host -u "$(id -u):$(id -g)" -v "$PWD/perf:/perf:ro" -v "$PWD/$OUT:/out" \
   -e K6_WEB_DASHBOARD=true -e K6_WEB_DASHBOARD_EXPORT="/out/k6-$SCRIPT-$LABEL.html" "$@" \
-  grafana/k6 run --quiet --summary-export="/out/k6-$SCRIPT-$LABEL.json" \
+  grafana/k6 run --quiet \
   $( [ "$SCRIPT" = stress ] && echo "--out csv=/out/k6-stress-$LABEL-points.csv.gz" ) "/perf/$SCRIPT.js" \
   > "$OUT/k6-$SCRIPT-$LABEL.txt" 2>&1 || true   # k6 exits 99 when a threshold fails: still a result
 
