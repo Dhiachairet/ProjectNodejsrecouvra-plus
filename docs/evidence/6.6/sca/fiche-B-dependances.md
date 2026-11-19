@@ -37,4 +37,16 @@ Sources :
 | minimatch | 10.2.6 (nodemon) | Indirect (via nodemon) | GHSA-g3hv-75wg-m249 | npm propose nodemon@3.1.11 (changement cassant) | Outillage de dev, non déployé en production. Non appliqué : correctif cassant. À suivre. |
 | nodemon | 3.1.14 | Direct (dev) | — (hérite de minimatch) | — | Outil de développement uniquement. |
 
-Remarque : `npm audit --omit=dev` donne 0 vulnérabilité. Dependency-Check (`sca/dependency-check-2026-11-17.html`) n'a pas été relancé : ses constats qs et picomatch datent d'avant le correctif ; il signale aussi formidable 2.1.5 (LOW), non couvert par npm audit.
+## Dependency-Check : avant (`sca/dependency-check-2026-11-17.html`) / après (`sca/dependency-check-after-2026-11-19.html`)
+
+5 → 3 dépendances vulnérables, 8 → 3 vulnérabilités (1576 → 1597 dépendances analysées).
+
+| Dépendance | Avant (2026-11-17) | Après (2026-11-19) | Décision |
+|---|---|---|---|
+| qs 6.14.3 | MEDIUM ×4 | Corrigé (6.17.1) | Override `qs` |
+| picomatch 2.3.2 (backend) | HIGH ×1 | Corrigé | Disparu avec l'override |
+| picomatch 4.0.7 (frontend) | HIGH ×1 (GHSA-fc5q-39xc-vjpf) | Toujours signalé | Dans `frontend/package-lock.json` ; `npm audit` frontend = 0 : écart entre outils, à vérifier manuellement |
+| minimatch 10.2.6 (via nodemon) | MODERATE ×1 (GHSA-g3hv-75wg-m249) | Toujours signalé | Dev uniquement ; correctif cassant non appliqué |
+| formidable 2.1.5 (via supertest) | LOW ×1 (CVE-2025-46653) | Toujours signalé | Dev uniquement (tests) |
+
+Réserve : le scan du 19 novembre a échoué à mettre à jour la base NVD (« Invalid API Key, length of 0 », `NVD API Last Checked` = 2026-11-17T21:52:11Z, comme le premier scan). Les deux scans utilisent donc les mêmes données ; les failles publiées après le 17 novembre ne sont pas couvertes. Pour un scan à jour, renseigner une clé API NVD valide.

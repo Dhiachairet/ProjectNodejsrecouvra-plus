@@ -115,10 +115,29 @@ Reste : `minimatch` via `nodemon` ; le correctif proposé par npm (`npm audit fi
 | High | 5 (picomatch, fdir, tinyglobby, vite, @vitejs/plugin-react) | 0 |
 | Moderate / Low | 0 | 0 |
 
-### OWASP Dependency-Check — `sca/dependency-check-2026-11-17.html` (v13.0.0)
-- Avant : Non disponible (un seul scan ; `dependency-check-after-2026-11-17.html` est octet pour octet identique).
-- Résultat unique : 5 dépendances vulnérables, 8 vulnérabilités : formidable 2.1.5 (LOW 1), minimatch 10.2.6 (MODERATE 1), picomatch 2.3.2 (HIGH 1), picomatch 4.0.7 (HIGH 1), qs 6.14.3 (MEDIUM 4).
-- `sca/fiche-B-dependances.md` : absent.
+### OWASP Dependency-Check (v13.0.0) — `sca/dependency-check-2026-11-17.html` (avant) / `sca/dependency-check-after-2026-11-19.html` (après)
+
+| | Avant (2026-11-17, `qs` 6.14.3) | Après (2026-11-19, override `qs` 6.17.1) |
+|---|---|---|
+| Dépendances analysées | 1576 (575 uniques) | 1597 (590 uniques) |
+| Dépendances vulnérables | 5 | 3 |
+| Vulnérabilités | 8 | 3 |
+
+| Dépendance | Avant | Après |
+|---|---|---|
+| qs | 6.14.3 : MEDIUM ×4 | Plus signalé (6.17.1) |
+| picomatch 2.3.2 (backend) | HIGH ×1 | Plus signalé |
+| picomatch 4.0.7 (frontend, `frontend/package-lock.json`) | HIGH ×1 (GHSA-fc5q-39xc-vjpf) | Toujours signalé |
+| minimatch 10.2.6 (via nodemon, dev) | MODERATE ×1 (GHSA-g3hv-75wg-m249) | Toujours signalé |
+| formidable 2.1.5 (via supertest, dev) | LOW ×1 (CVE-2025-46653) | Toujours signalé |
+
+Constat : 5 → 3 dépendances vulnérables, 8 → 3 vulnérabilités ; les 5 vulnérabilités `qs` et `picomatch` backend sont corrigées.
+
+⚠️ Réserves :
+- Le scan « après » signale `Error updating the NVD Data` (« Invalid API Key, length of 0 »). La base NVD n'a pas été mise à jour : `NVD API Last Checked` reste 2026-11-17T21:52:11Z, comme au premier scan. Les deux scans utilisent les mêmes données ; les failles publiées après le 17 novembre ne sont pas couvertes.
+- `picomatch 4.0.7` (frontend, HIGH) n'apparaît pas dans `npm audit` du frontend (0 vulnérabilité, `sca/npm-audit-frontend-after-2026-11-18.txt`) : écart entre les deux outils, à vérifier manuellement.
+- `sca/dependency-check-after-2026-11-17.html` est identique octet pour octet à celui du 17 novembre : ignoré.
+- Détail et décisions : `sca/fiche-B-dependances.md`.
 
 ## 6. DAST (ZAP)
 
@@ -246,8 +265,8 @@ Alertes restantes et justification :
 - **CSP `style-src 'unsafe-inline'` / Wildcard Directive** : CSP par défaut de Helmet (compatibilité Swagger/UI) ; à durcir par une CSP personnalisée.
 - **COEP / Permissions-Policy** : non définis par défaut par Helmet ; à ajouter si requis.
 - **HTTP Only Site** : environnement de test sans TLS ; à traiter au déploiement (HTTPS).
-- **Dépendances backend** : `minimatch` (via `nodemon`, dev uniquement, 2 moderate) ; correctif cassant non appliqué. `qs` et `picomatch` corrigés (override `qs` 6.17.1). Dependency-Check (2026-11-17) n'a pas été relancé : ses constats qs/picomatch ne reflètent plus l'état actuel.
+- **Dépendances backend** : `minimatch` (via `nodemon`, dev uniquement, 2 moderate) ; correctif cassant non appliqué. `qs` et `picomatch` corrigés (override `qs` 6.17.1). Dependency-Check du 2026-11-19 : 3 vulnérabilités restantes (minimatch, formidable 2.1.5 LOW, picomatch 4.0.7 frontend HIGH), base NVD non mise à jour pendant ce scan.
 - **ESLint** : plus d'alerte sur `src` et `frontend/src` ; 24 warnings `detect-object-injection` restent dans `scripts/seed.js` et `tests/` (hors périmètre).
 - **JWT en localStorage** : documenté ; migration cookies HttpOnly/Secure/SameSite non faite.
 
-À régénérer pour un dossier complet : D01-D08 (avant/après), captures Burp (4), Dependency-Check « avant », fiches A et B, passes Jest par fichier.
+À régénérer pour un dossier complet : D01-D08 (avant/après), captures Burp (4), passes Jest par fichier.
