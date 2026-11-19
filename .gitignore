@@ -16,7 +16,7 @@ test/evidence/6.1/playwright-report-apres/
 test/evidence/**/*-points.csv.gz
 test/evidence/**/*.report.json
 test/evidence/6.3/newman-contrat-api*.json
-test/.rapport-final.html
+test/.report-*.html
 
 # Documents locaux (sujet du prof, rapports des autres étudiants) : jamais poussés
 docs/*.pdf
