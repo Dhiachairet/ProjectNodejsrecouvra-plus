@@ -50,13 +50,24 @@ export async function getInvoices(req, res, next) {
     const sort = { [sortBy]: sortOrder };
     
    
-    const invoices = await Invoice.find(filter)
+        const invoices = await Invoice.find(filter)
       .populate('client', 'name email company phone')
       .populate('createdBy', 'firstName lastName')
       .populate('payments.receivedBy', 'firstName lastName')
       .sort(sort)
       .skip(skip)
-      .limit(parseInt(limit));
+      .limit(parseInt(limit))
+      .lean(); // Convert to plain JS object so we can modify the status on the fly
+
+    // BUG C FIX: Dynamically compute "overdue" status at read-time
+    // so we don't rely on the document being saved again.
+    const now = new Date();
+    const processedInvoices = invoices.map(inv => {
+      if (inv.status === 'unpaid' && new Date(inv.dueDate) < now) {
+        inv.status = 'overdue';
+      }
+      return inv;
+    });
     
     
     const total = await Invoice.countDocuments(filter);
