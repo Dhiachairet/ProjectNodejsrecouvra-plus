@@ -43,6 +43,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Report only for now: the backend has known vulnerable dependencies, which the security work
+      # (ISO 25010, 6.6) updates. The findings show on the run page without failing the build;
+      # remove continue-on-error to make the audit blocking once they are fixed.
+      - name: Dependency audit (report only)
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
       - name: Lint
         run: npm run lint
 
@@ -77,6 +84,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # Blocking: the frontend has no known vulnerable dependency, so a new high or critical one fails the job
+      - name: Dependency audit
+        run: npm audit --audit-level=high
 
       - name: Build
         run: npm run build

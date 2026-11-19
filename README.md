@@ -65,9 +65,11 @@ Every push and pull request runs [.github/workflows/ci.yml](.github/workflows/ci
 
 | Job | What it proves |
 |---|---|
-| Lint and test (API) | `npm run lint` has no errors and every test passes (coverage report kept as an artifact) |
-| Frontend build | The React app builds from a clean install |
+| Lint and test (API) | `npm run lint` has no errors and every test passes (coverage report kept as an artifact). `npm audit` runs too, but only reports for now |
+| Frontend build | The React app builds from a clean install and `npm audit` finds no high or critical vulnerability |
 | Docker smoke test | The Docker image builds, the stack starts, the seed runs and the smoke test passes on a clean Linux machine |
+
+The backend audit does not fail the build yet: its known vulnerable dependencies are updated as part of the security work (6.6). Once they are fixed, remove `continue-on-error` from that step to make it blocking.
 
 ## Tests
 
