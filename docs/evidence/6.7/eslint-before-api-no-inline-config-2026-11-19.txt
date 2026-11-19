@@ -1,0 +1,22 @@
+
+frontend\src\api.js
+  13:8  warning  Async function 'api' has a complexity of 16. Maximum allowed is 10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      complexity
+  49:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  47 |     if (!path) return;
+  48 |     let active = true;
+> 49 |     setState(previous => ({ ...previous, loading: true }));
+     |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  50 |     api(path, { query })
+  51 |       .then(data => active && setState({ data, error: null, loading: false }))
+  52 |       .catch(error => active && setState({ data: null, error: error.message, loading: false }));  react-hooks/set-state-in-effect
+  56:6  warning  React Hook useEffect has missing dependencies: 'path' and 'query'. Either include them or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-hooks/exhaustive-deps
+
+✖ 3 problems (1 error, 2 warnings)
+

@@ -1,0 +1,61 @@
+
+frontend\src\api.js
+  13:8  warning  Async function 'api' has a complexity of 16. Maximum allowed is 10                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      complexity
+  49:5  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  47 |     if (!path) return;
+  48 |     let active = true;
+> 49 |     setState(previous => ({ ...previous, loading: true }));
+     |     ^^^^^^^^ Avoid calling setState() directly within an effect
+  50 |     api(path, { query })
+  51 |       .then(data => active && setState({ data, error: null, loading: false }))
+  52 |       .catch(error => active && setState({ data: null, error: error.message, loading: false }));  react-hooks/set-state-in-effect
+
+frontend\src\auth.jsx
+  44:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+frontend\src\components\ClientForm.jsx
+  5:16  warning  Function 'ClientForm' has a complexity of 15. Maximum allowed is 10  complexity
+
+frontend\src\components\TransitionControl.jsx
+  10:16  warning  Function 'TransitionControl' has a complexity of 11. Maximum allowed is 10  complexity
+
+frontend\src\pages\ClientDetail.jsx
+  11:16  warning  Function 'ClientDetail' has too many lines (91). Maximum allowed is 80  max-lines-per-function
+
+frontend\src\pages\Dashboard.jsx
+  10:16  warning  Function 'Dashboard' has too many lines (116). Maximum allowed is 80  max-lines-per-function
+  10:16  warning  Function 'Dashboard' has a complexity of 13. Maximum allowed is 10    complexity
+
+frontend\src\pages\InvoiceDetail.jsx
+  102:16  warning  Function 'InvoiceDetail' has too many lines (94). Maximum allowed is 80  max-lines-per-function
+  102:16  warning  Function 'InvoiceDetail' has a complexity of 14. Maximum allowed is 10   complexity
+
+src\controllers\audit.controller.js
+  6:8  warning  Async function 'getAuditLogs' has a complexity of 11. Maximum allowed is 10  complexity
+
+src\controllers\collection.controller.js
+  17:8  warning  Async function 'getCollectionActions' has a complexity of 14. Maximum allowed is 10  complexity
+
+src\controllers\invoice.controller.js
+  12:8  warning  Async function 'getInvoices' has a complexity of 15. Maximum allowed is 10  complexity
+
+src\controllers\stats.controller.js
+  17:1  warning  Async function 'buildScope' has a complexity of 17. Maximum allowed is 10  complexity
+  48:8  warning  Async function 'getStats' has too many lines (222). Maximum allowed is 80  max-lines-per-function
+  48:8  warning  Async function 'getStats' has a complexity of 11. Maximum allowed is 10    complexity
+
+src\middleware\errorHandler.js
+  3:45  error  'next' is defined but never used. Allowed unused args must match /^_/u  no-unused-vars
+
+src\workflows\collectionAction.workflow.js
+  22:8  warning  Function 'checkTransition' has a complexity of 12. Maximum allowed is 10  complexity
+
+✖ 18 problems (2 errors, 16 warnings)
+
