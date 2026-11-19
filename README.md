@@ -10,7 +10,7 @@ Project for the Software Quality and Test Automation module (ISO/IEC 25010).
 
 ## Prerequisites
 
-- Node.js 20+ and npm
+- Node.js 20.19+, 22.13+ or 24+, and npm (ESLint 10 needs these versions)
 - MongoDB 6+ running locally (or any `MONGODB_URI`)
 
 ## Installation
@@ -71,6 +71,22 @@ Tests run against an in-memory MongoDB, so they need no `.env` and never touch y
 | `useTestDB()` | `tests/helpers/db.js` | registers the connect / clear / disconnect hooks |
 
 The test environment variables (JWT secret, fast password hashing) are set in `tests/helpers/env.js`.
+
+## Lint
+
+```bash
+npm run lint                      # backend, tests and React frontend, with one config (eslint.config.js)
+npm run lint:fix                  # also applies the fixes ESLint can make safely by itself
+npm run lint:report -- <name>     # saves the results as docs/evidence/6.7/<name>.html and .txt
+```
+
+- **Errors** must be fixed.
+- **Warnings** are mostly maintainability metrics (a function with a complexity above 10, nesting deeper than 4, more than 4 parameters, or longer than 80 lines), plus React hooks and fast-refresh hints.
+- **Don't silence a rule** with an `eslint-disable` comment; fix the code instead.
+- **An unused parameter that has to stay** is named with a leading underscore, for example `_next` in an Express error handler.
+- **Global names:** Node files may only use ES-module globals, so `require` or `__dirname` are reported.
+
+Latest results: [docs/evidence/6.7/ESLINT_SUMMARY.md](docs/evidence/6.7/ESLINT_SUMMARY.md).
 
 ## Demo accounts
 

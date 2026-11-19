@@ -1,0 +1,49 @@
+Regression check after the ESLint fixes, run on 2026-11-19T15:52Z, Node v24.11.1
+
+== npm test
+
+> recouvra-plus@1.0.0 test
+> node --experimental-vm-modules node_modules/jest/bin/jest.js
+
+PASS tests/integration/setup.test.js
+  Shared test setup
+    √ serves the health endpoint (25 ms)
+    √ logs a created user in and returns their profile (87 ms)
+    √ rejects a wrong password (25 ms)
+    √ starts every test with an empty database (6 ms)
+    √ builds test data with the factories (70 ms)
+    √ supports MongoDB transactions (46 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       6 passed, 6 total
+Snapshots:   0 total
+Time:        2.498 s, estimated 3 s
+Ran all test suites.
+
+== npm run frontend:build
+vite v8.3.8 building client environment for production...
+transforming...
+✓ 43 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.48 kB │ gzip:  0.30 kB
+dist/assets/index-qAb2BA5R.css    6.47 kB │ gzip:  1.97 kB
+dist/assets/index-Bej261nu.js   302.11 kB │ gzip: 90.78 kB
+✓ built in 144ms
+
+== npm run lint
+✖ 15 problems (0 errors, 15 warnings)
+
+
+== Scripted browser walkthrough (Playwright + Microsoft Edge, headless) against the built app
+   Steps: sign in as manager, change dashboard filters (agent, date range), assign agents to a client,
+   open an overdue invoice, complete a planned collection action, open Users; sign in as agent (no Users/Audit
+   in navigation, /audit redirects); sign in as admin, open and filter the audit log; any console error fails the run.
+dashboard first KPI: 24,795,923.09 TND -> agent: 11,145,136.37 TND -> +range: 1,983,704.39 TND
+manager nav: Dashboard | Clients | Invoices | Collection actions | Users
+agent nav: Dashboard | Clients | Invoices | Collection actions
+agent redirected away from /audit: ok
+admin nav: Dashboard | Clients | Invoices | Collection actions | Users | Audit log
+audit rows on first page: 24
+
+UI CHECK OK
