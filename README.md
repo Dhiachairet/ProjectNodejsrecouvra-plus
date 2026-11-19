@@ -59,6 +59,8 @@ docker compose down                                 # stop; add -v to also delet
 - To use another port: `APP_PORT=8080 docker compose up -d --build --wait`, then `BASE_URL=http://localhost:8080 node scripts/smoke-test.js`.
 - The same commands are available as `npm run docker:up`, `docker:seed`, `docker:down` and `smoke`.
 
+Portability test results (fresh clone, Windows and Linux): [docs/evidence/6.8/PORTABILITY_SUMMARY.md](docs/evidence/6.8/PORTABILITY_SUMMARY.md).
+
 ## Continuous integration
 
 Every push and pull request runs [.github/workflows/ci.yml](.github/workflows/ci.yml) on GitHub Actions, with 3 jobs:
