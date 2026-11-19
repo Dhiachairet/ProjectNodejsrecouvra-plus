@@ -42,7 +42,7 @@ test('CT-P-06 filtrer par client puis par agent change les KPI', async ({ page }
 test('CT-E-08 période sans données : les KPI tombent à zéro', async ({ page }) => {
   await login(page, USERS.admin);
   const filters = page.getByRole('form', { name: 'Dashboard filters' });
-  await filters.getByLabel('From').fill('1990-01-01');
-  await filters.getByLabel('To').fill('1990-12-31');
+  await filters.getByLabel('From', { exact: true }).fill('1990-01-01');
+  await filters.getByLabel('To', { exact: true }).fill('1990-12-31');
   await expect(invoiced(page)).toContainText(/(^|\D)0 invoices/);
 });
